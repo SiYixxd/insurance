@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.MessageInfoDao">
+	<resultMap id="messageInfoMap" type="com.wanghuan.model.sys.MessageInfo">
+		<id column="PK_SID" property="pkSid" />
+		<result column="CHECK_CODE" property="userId" />
+		<result column="USER_NAME" property="code" />
+		<result column="MOBILE" property="mobile" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="TIMEOUT" property="timeout" />
+	</resultMap>
+	<!-- 查询code信息 -->
+	<select id="select" parameterType="String" resultType="String">
+		select CHECK_CODE from t_sms
+		<where>
+			<if test="MOBILE != null">and MOBILE = #{mobile}</if>
+		</where>
+	</select>
+</mapper>

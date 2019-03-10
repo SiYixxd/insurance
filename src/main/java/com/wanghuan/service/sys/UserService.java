@@ -35,18 +35,6 @@ public interface UserService {
 	public Integer usersSize(String loginName, int pageSize, int start);
 
 	/**
-	 * 新建用户信息
-	 * @param userEntity
-	 */
-	public void insertUser(UserEntity userEntity);
-
-	/**
-	 * 更新用户信息
-	 * @param userEntity
-	 */
-	public void updateUser(UserEntity userEntity);
-
-	/**
 	 * 删除用户信息
 	 * @param groupId
 	 */

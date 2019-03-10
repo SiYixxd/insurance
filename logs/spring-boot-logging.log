@@ -4760,10 +4760,6 @@ Negative matches:
       Did not match:
          - @ConditionalOnClass did not find required classes 'org.neo4j.ogm.session.Neo4jSession', 'org.springframework.data.neo4j.repository.Neo4jRepository' (OnClassCondition)
 
-   OAuth2ClientAutoConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity', 'org.springframework.security.oauth2.client.registration.ClientRegistration' (OnClassCondition)
-
    ProjectInfoAutoConfiguration#buildProperties:
       Did not match:
          - @ConditionalOnResource did not find resource '${spring.info.build.location:classpath:META-INF/build-info.properties}' (OnResourceCondition)
@@ -4779,11 +4775,6 @@ Negative matches:
    RabbitAutoConfiguration:
       Did not match:
          - @ConditionalOnClass did not find required classes 'org.springframework.amqp.rabbit.core.RabbitTemplate', 'com.rabbitmq.client.Channel' (OnClassCondition)
-
-   ReactiveSecurityAutoConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes 'org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity', 'org.springframework.security.web.reactive.result.method.annotation.AuthenticationPrincipalArgumentResolver' (OnClassCondition)
-
    ReactiveWebServerAutoConfiguration:
       Did not match:
          - not a reactive web application (OnWebApplicationCondition)
@@ -4793,14 +4784,6 @@ Negative matches:
    RepositoryRestMvcAutoConfiguration:
       Did not match:
          - @ConditionalOnClass did not find required class 'org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration' (OnClassCondition)
-
-   SecurityAutoConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes 'org.springframework.security.authentication.AuthenticationManager', 'org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter' (OnClassCondition)
-
-   SecurityFilterAutoConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes 'org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer', 'org.springframework.security.config.http.SessionCreationPolicy' (OnClassCondition)
 
    SendGridAutoConfiguration:
       Did not match:

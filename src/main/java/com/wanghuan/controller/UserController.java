@@ -1,6 +1,8 @@
-package com.wanghuan.controller.sys;
+package com.wanghuan.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,13 +26,20 @@ public class UserController {
 
 	private Logger log = LoggerFactory.getLogger(UserController.class);
 
+	public Map<String, UserEntity> cacheMap = new HashMap<>();
+
 	@Resource(name = "userServiceImpl")
 	private UserService userService;
 
 	@GetMapping("/user/{loginName}")
 	public UserEntity userGet(@PathVariable String loginName) {
-		UserEntity userEntity = userService.getUserEntityByLoginName(loginName);
+
+
+		UserEntity userEntity
+				= userService.getUserEntityByLoginName(loginName);
+		// 复杂对象
 		log.debug("The method is ending");
+
 		return userEntity;
 	}
 
@@ -44,6 +53,7 @@ public class UserController {
 	 */
 	@GetMapping("/users")
 	public PageResult usersList(String loginName, int pageSize, int page) {
+
 		PageResult pageResult = new PageResult();
 		pageResult.setData(userService.usersList(loginName, pageSize, page * pageSize));
 		pageResult.setTotalCount(userService.usersSize(loginName, pageSize, page * pageSize));
@@ -59,7 +69,7 @@ public class UserController {
 	 */
 	@PostMapping("/users/user")
 	public UserEntity insertUser(@RequestBody UserEntity userEntity) {
-		userService.insertUser(userEntity);
+//		userService.insertUser(userEntity);
 		log.debug("The method is ending");
 		return userEntity;
 	}
@@ -74,7 +84,7 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	public UserEntity updateUser(@RequestBody UserEntity userEntity, @PathVariable int id) {
 		if (userEntity.getId() == id) {
-			userService.updateUser(userEntity);
+//			userService.updateUser(userEntity);
 		}
 		log.debug("The method is ending");
 		return userEntity;

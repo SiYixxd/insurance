@@ -1,4 +1,4 @@
-package com.wanghuan.controller.sys;
+package com.wanghuan.controller;
 
 import java.util.List;
 

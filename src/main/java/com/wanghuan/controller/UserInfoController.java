@@ -5,6 +5,7 @@ import com.wanghuan.controller.response.BaseResponse;
 import com.wanghuan.model.sys.MessageInfo;
 import com.wanghuan.model.sys.UserInfo;
 import com.wanghuan.service.sys.UserInfoService;
+import com.wanghuan.utils.SmsUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,7 +17,6 @@ public class UserInfoController {
 
     @Resource(name = "userInfoServiceImpl")
     private UserInfoService userInfoService;
-
 
 
     /**
@@ -31,40 +31,62 @@ public class UserInfoController {
         String checkCode = String.valueOf(random.nextInt(100000));
         //2 请求第三方短信接口发送短信
         //todo 请求第三方短信接口发送短信
-
+        
+          SmsUtil.mobileQuery();
         //3 todo 短信数据保存到数据库
+        //通过messageMapper配置保存到数据库,怎么读取到这个code
+        // insert into t_msm ()value() ;把checkCode保存到数据库 获取String类型的checkCode对象，
 
         //4 发送成功则给用户返回数据
         return checkCode;
     }
 
+    /**
+     * 短信验证码注册和登陆接口
+     * @param request request请求中包含了用户的手机号
+     * @return
+     */
     @PostMapping(value = "/register")
     public BaseResponse register(@RequestBody RegisterRequest request) {
         BaseResponse response = new BaseResponse();
         //1 验证验证码是不是正确
-            //1.1 根据手机号从messageinfo中查到最近一挑【order by createTime DESC limit 1】
-            //1.2 判断手机号的验证码记录是不是有记录 如果没有返回一个报错信息提示验证码不存在
-            //1.3 如果有 判断截止时间  并且判断用户的验证吗和数据库是不是一致  不一致则直接提示异常
-        MessageInfo dbMessageInfo = new MessageInfo();
-        long timeout = dbMessageInfo.getTimeout() * 1000;// 5分钟的毫秒
-        long now = new Date().getTime();
-        long sendMessage = dbMessageInfo.getCreateTime().getTime();//发送短信的时间毫秒值
-        if((sendMessage + timeout) < now){
-            //已经过期
-            response.setCode(10001);
-            response.setMessage("您的验证码已经过期了");
+        //1.1 根据手机号从t_msm中查到最近一挑【order by createTime DESC limit 1】
+        //通过查询返回的messageInfoMap对象查看map中的code
 
-        }else if(!dbMessageInfo.getCode().equals(request.getCode())){
-            //验证码不正确
-            response.setCode(10001);
-            response.setMessage("您的验证码错误");
-            return response;
-        }
+        //1.2 判断手机号的验证码记录是不是有记录 如果没有返回一个报错信息提示验证码不存在
+
+               if(map.getValue(code)!==null){
+        //1.3 如果有 判断截止时间  并且判断用户的验证吗和数据库是不是一致  不一致则直接提示异常
+                //getCheckCode(userMobile);
+                MessageInfo dbMessageInfo = new MessageInfo();//新建一个messageInfo对象
+                long timeout = dbMessageInfo.getTimeout() * 1000;// 设置时间，5分钟的毫秒
+                long now = new Date().getTime(); //记录当前时间
+                long sendMessage = dbMessageInfo.getCreateTime().getTime();//发送短信的时间毫秒值
+                if ((sendMessage + timeout) < now) {    //发送短信的时间+5min要大于当前时间，如果小于当前时间说明短信已经过期
+                    response.setCode(10001);
+                    response.setMessage("您的验证码已经过期了");
+                } else if (!dbMessageInfo.getCode().equals(request.getCode())) {
+                    //验证码不正确
+                    response.setCode(10001);
+                    response.setMessage("您的验证码错误");
+                    return response;
+                }
+        }else{     //验证码不存在
+                    response.setCode(10001);
+                    response.setMessage("您的验证不存在");
+                }
         //2 验证码通过
-            //2.1 通过手机号查询userInfo，
+        //2.1 通过手机号查询userInfo，
         UserInfo userInfo = userInfoService.getUserInfoByUserMobile(request.getMobile());
-            //2.2 如果有记录，说明他是登陆 直接返回信息
-            //2.3 如果没有记录，注册，保存用户信息， 返回信息
+        //2.2 如果有记录，说明他是登陆 直接返回信息
+        if (userInfo!==null){
+            response.getInfo();
+        }else{
+            //2.3 如果没有记录，注册，保存用户信息， 返回信息 registerService
+
+        }
+
+
         //2.4注册 事务操作 一定要写到service
         response.setInfo(userInfo);
         response.setCode(10000);
@@ -78,6 +100,7 @@ public class UserInfoController {
         UserInfo userInfo = userInfoService.getUserInfoByUserMobile(userMobile);
         return userInfo;
     }
+
     /**
      * 新建用户信息
      *
@@ -89,6 +112,7 @@ public class UserInfoController {
         userInfoService.insertUser(userInfo);
         return userInfo;
     }
+
     /*更新用户信息
     @param id
     @return

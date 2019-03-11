@@ -34,7 +34,7 @@
 		</where>
 	</update>
 	<!-- 查询用户信息 -->
-	<select id="select">
+	<select id="selectUserInfo">
 		select * from t_user_info
 		<where>
 			<if test="PK_SID != null">PK_SID = #{pkSid}</if>

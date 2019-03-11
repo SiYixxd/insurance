@@ -9,11 +9,22 @@
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="TIMEOUT" property="timeout" />
 	</resultMap>
-	<!-- 查询code信息 -->
-	<select id="select" parameterType="String" resultType="String">
-		select CHECK_CODE from t_sms
+	<!-- 保存code信息
+	 	id 是接口的方法名称
+	 	parameterType 如果要用到对象，这里传对象的引用
+	 -->
+	<insert id="saveMessageInfo" parameterType="com.wanghuan.model.sys.MessageInfo">
+		inset into t_msm (PK_SID,CHECK_CODE,MOBILE,CREATE_TIME,TIMEOUT)
+		values
+		(#{messageInfo.pkSid},#{messageInfo.code},#{messageInfo.mobile},#{messageInfo.createTime},#{messageInfo.timeout})
+	</insert>
+
+	<!--应该返回的是一个MessageInfo对象-->
+	<select id="getMsgByMobile" parameterType="String" resultMap="messageInfoMap">
+		select * from t_sms
 		<where>
-			<if test="MOBILE != null">and MOBILE = #{mobile}</if>
+			MOBILE = #{mobile}
 		</where>
+			order by createTime DESC limit 1
 	</select>
 </mapper>

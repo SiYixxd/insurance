@@ -22,7 +22,6 @@ public interface UserInfoDao {
     * @param userInfo
     */
     public void insertUser(@Param("userInfo") UserInfo userInfo);
-
     /*更新一个用户
      * @param userInfo
      */

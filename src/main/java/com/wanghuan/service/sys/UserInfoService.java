@@ -12,5 +12,7 @@ public interface UserInfoService {
     * @return
     * */
     public UserInfo getUserInfoByUserMobile(String userMobile);
+    //更新用户密码
+    public void updateUserPassword(String password);
 
 }

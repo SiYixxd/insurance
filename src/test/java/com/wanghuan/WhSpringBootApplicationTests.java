@@ -35,10 +35,8 @@ public class WhSpringBootApplicationTests {
 	@Test
 	public void password() throws Exception{
 		//第一种情况  保存密码
-
 		String password = MD5Util.encrypt("18835579392" + "qwer1234");
 		//保存到数据库
-
 		//第二种情况， 登陆
 		// 数据库存在的密码
 		String dbPassword = password;
@@ -49,7 +47,6 @@ public class WhSpringBootApplicationTests {
 		}else {
 			//密码错误
 		}
-
 		//第三种情况 更改密码
 		String oldPassword= "qwer1234";
 		String newPassword= "qwer1234";

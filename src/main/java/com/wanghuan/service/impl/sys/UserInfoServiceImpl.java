@@ -5,6 +5,7 @@ import com.wanghuan.model.sys.UserInfo;
 import com.wanghuan.service.sys.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service(value = "userInfoServiceImpl")
 public class UserInfoServiceImpl implements UserInfoService {
@@ -18,6 +19,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    @Transactional
     public void updateUser(UserInfo userInfo) {
         userInfoDao.updateUser(userInfo);
     }
@@ -25,5 +27,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo getUserInfoByUserMobile(String userMobile) {
             return userInfoDao.getUserInfoByUserMobile(userMobile);
+    }
+
+    @Override
+    public void updateUserPassword(String password) {
+         userInfoDao.updateUserPassword(password);
     }
 }

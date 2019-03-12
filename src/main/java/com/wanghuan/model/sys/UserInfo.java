@@ -18,4 +18,5 @@ public class UserInfo implements Serializable {
     private String userMobile;
     private String imageUrl;
     private Date createTime;
+    private String password;
 }

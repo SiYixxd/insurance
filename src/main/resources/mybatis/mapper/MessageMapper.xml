@@ -9,8 +9,9 @@
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="TIMEOUT" property="timeout" />
 	</resultMap>
+
 	<!-- 保存code信息
-	 	id 是接口的方法名称
+	 	id 是Service接口的方法名称
 	 	parameterType 如果要用到对象，这里传对象的引用
 	 -->
 	<insert id="saveMessageInfo" parameterType="com.wanghuan.model.sys.MessageInfo">

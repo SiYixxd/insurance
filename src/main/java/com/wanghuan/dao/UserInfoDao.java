@@ -26,5 +26,9 @@ public interface UserInfoDao {
      * @param userInfo
      */
     public void updateUser(@Param("userInfo") UserInfo userInfo);
+    /*更新用户密码
+    *@param password
+    * */
+    public void updateUserPassword(@Param("password") String password);
 
 }

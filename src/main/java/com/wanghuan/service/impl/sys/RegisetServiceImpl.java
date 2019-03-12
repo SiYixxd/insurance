@@ -30,7 +30,7 @@ public class RegisetServiceImpl implements RegistService {
     @Override
     @Transactional(readOnly = false)    //事务注解
     public UserInfo signUp(String mobile, String userName, String code, String imageUrl) {
-        // 注册的话 用户名给随机值， 头像给默认空就行了。 需要一个接口用于用户更新昵称和头像
+        // 注册的话 用户名给随机值，头像给默认空就行了。 需要一个接口用于用户更新昵称和头像
         UserInfo userInfo = userInfoService.getUserInfoByUserMobile(mobile);
         //2.2 如果有记录，说明他是登陆 直接返回信息
         if (userInfo!=null){

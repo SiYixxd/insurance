@@ -13,6 +13,6 @@ public interface UserInfoService {
     * */
     public UserInfo getUserInfoByUserMobile(String userMobile);
     //更新用户密码
-    public void updateUserPassword(String password);
+    public void updateUserPassword(String password, String mobile);
 
 }

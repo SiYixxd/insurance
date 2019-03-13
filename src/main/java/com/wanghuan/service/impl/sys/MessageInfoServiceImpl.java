@@ -22,6 +22,6 @@ public class MessageInfoServiceImpl implements MessageInfoService {
 
     @Override
     public void saveMessageInfo(MessageInfo info) {
-        messageInfoDao.insertCode(info);
+        messageInfoDao.saveMessageInfo(info);
     }
 }

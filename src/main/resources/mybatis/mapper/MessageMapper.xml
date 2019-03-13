@@ -3,21 +3,20 @@
 <mapper namespace="com.wanghuan.dao.MessageInfoDao">
 	<resultMap id="messageInfoMap" type="com.wanghuan.model.sys.MessageInfo">
 		<id column="PK_SID" property="pkSid" />
-		<result column="CHECK_CODE" property="userId" />
-		<result column="USER_NAME" property="code" />
+		<result column="CHECK_CODE" property="code" />
 		<result column="MOBILE" property="mobile" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="TIMEOUT" property="timeout" />
 	</resultMap>
 
 	<!-- 保存code信息
-	 	id 是Service接口的方法名称
+	 	id 是 dao 接口的方法名称
 	 	parameterType 如果要用到对象，这里传对象的引用
 	 -->
 	<insert id="saveMessageInfo" parameterType="com.wanghuan.model.sys.MessageInfo">
-		inset into t_msm (PK_SID,CHECK_CODE,MOBILE,CREATE_TIME,TIMEOUT)
+		insert into t_sms (PK_SID,CHECK_CODE,MOBILE,CREATE_TIME,TIMEOUT)
 		values
-		(#{messageInfo.pkSid},#{messageInfo.code},#{messageInfo.mobile},#{messageInfo.createTime},#{messageInfo.timeout})
+		(#{pkSid},#{code},#{mobile},#{createTime},#{timeout})
 	</insert>
 
 	<!--应该返回的是一个MessageInfo对象-->
@@ -26,6 +25,6 @@
 		<where>
 			MOBILE = #{mobile}
 		</where>
-			order by createTime DESC limit 1
+			order by CREATE_TIME DESC limit 1
 	</select>
 </mapper>

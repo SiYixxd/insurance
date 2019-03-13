@@ -16,5 +16,4 @@ public class MessageInfo implements Serializable {
     private String mobile;
     private Date createTime;
     private int timeout;
-
 }

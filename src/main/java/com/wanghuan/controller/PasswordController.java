@@ -17,7 +17,7 @@ public class PasswordController {
     @Resource(name = "userInfoServiceImpl")
     private UserInfoService userInfoService;
 
-    public void updatePassword(String password, String newPassword, String mobile) throws NoSuchAlgorithmException {
+    public BaseResponse updatePassword(String password, String newPassword, String mobile) throws NoSuchAlgorithmException {
         BaseResponse response = new BaseResponse();
         //通过用户手机号来获取用户的oldPassword
         UserInfo userInfo = userInfoService.getUserInfoByUserMobile(mobile);
@@ -34,23 +34,26 @@ public class PasswordController {
         if (dbPassword == null || dbPassword.equals("")) {
             response.setCode(10001);
             response.setMessage("您的密码为空，请输入密码！");
+            return response;
         } else if (dbPassword != password) {
             response.setCode(10001);
             response.setMessage("您的密码不正确，请重新输入");
-        } else {
-            response.setCode(10000);
-            response.setMessage("恭喜您登陆成功");
+            return response;
         }
+
+        // 更新密码了
         //登陆以后开始修改密码
         if (dbPassword == newPassword){
             response.setCode(10001);
             response.setMessage("不能使用旧密码");
-        }else{
-
+            return response;
         }
         //判断全部通过了将密码保存
         String md5Password=  MD5Util.encrypt(newPassword);
         userInfo.setPassword(md5Password);
-        userInfoService.updateUserPassword(md5Password);
+        userInfoService.updateUserPassword(md5Password,mobile);
+        response.setCode(1000);
+        response.setMessage("成功");
+        return response;
     }
 }

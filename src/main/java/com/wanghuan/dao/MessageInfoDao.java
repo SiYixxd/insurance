@@ -9,7 +9,7 @@ import sun.plugin2.message.Message;
 public interface MessageInfoDao {
     /*新产生的code保存到数据库
      * */
-    public void insertCode(@Param("code") MessageInfo messageInfo);
+    public void saveMessageInfo(MessageInfo messageInfo);
 
     /*
      * 通过用户请求的手机号查询出数据库中对应的code order by createTime DESC limit 1

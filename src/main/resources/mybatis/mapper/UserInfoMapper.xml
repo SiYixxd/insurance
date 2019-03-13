@@ -11,39 +11,27 @@
 		<result column="password" property="password" />
 	</resultMap>
 	<!-- 新建用户信息 -->
-	<insert id="insertUser">
-		insert into t_user_info (PK_SID,USER_ID,USER_NAME,MOBILE,IMAGE_URL,CREATE_TIME,password)
-		values
-		(#{userInof.pkSid},#{userInof.userId},#{userInof.userName},#{userInof.userMobile},#{userInof.imageUrl},#{userInof.createTime},#{userInof.password})
+	<insert id="insertUser" parameterType="com.wanghuan.model.sys.UserInfo">
+		insert into t_user_info (PK_SID, USER_ID, USER_NAME, MOBILE,IMAGE_URL, CREATE_TIME, PASSWORD)
+		VALUES (#{pkSid},#{userId},#{userName},#{userMobile},#{imageUrl},#{createTime},#{password})
 	</insert>
+
 	<!-- 更新用户信息 -->
 	<update id="updateUser" parameterType="com.wanghuan.model.sys.UserInfo" >
-		update t_user_info set
+		update t_user_info
 		<set>
 			<if test="userName != null and userName = ''">
 				USER_NAME = #{userName},
 			</if>
+			<if test="imageUrl != null and imageUrl = ''">
+				IMAGE_URL = #{imageUrl},
+			</if>
 
 		</set>
-		PK_SID =
-		#{userInof.pkSid},
-		USER_ID =
-		#{userInof.userId},
-		USER_NAME = #{userInof.userName},
-		MOBILE =
-		#{userInof.userMobile}
-		IMAGE_URL=
-		#{userInof.imageUrl}
-		CREATE_TIME=
-		#{userInof.createTime}
-		password=
-		#{userInof.password}
-		<where>
-			USER_ID = #{userInof.userId}
-		</where>
+		WHERE USER_ID = #{userId}
 	</update>
 	<!-- 查询用户信息 -->
-	<select id="selectUserInfo">
+	<select id="selectUserInfo" resultMap="userInfoMap">
 		select * from t_user_info
 		<where>
 			<if test="PK_SID != null">PK_SID = #{pkSid}</if>
@@ -52,32 +40,21 @@
 			<if test="MOBILE != null">and MOBILE = #{userMobile}</if>
 		</where>
 	</select>
+
 	<select id="getUserInfoByUserMobile" resultMap="userInfoMap" parameterType="String">
 		select <include refid="USER_DATA"></include> from t_user_info
 		<where>
 			MOBILE = #{userMobile}
 		</where>
 	</select>
+
 	<!-- 更新用户密码 -->
 	<update id="updateUserPassword" parameterType="String" >
 		update t_user_info set
-		PK_SID =
-		#{userInof.pkSid},
-		USER_ID =
-		#{userInof.userId},
-		USER_NAME = #{userInof.userName},
-		MOBILE =
-		#{userInof.userMobile}
-		IMAGE_URL=
-		#{userInof.imageUrl}
-		CREATE_TIME=
-		#{userInof.createTime}
-		password=
-		#{userInof.password}
-		<where>
-			USER_MOBILE = #{userInof.mobile}
-		</where>
+		password= #{password}
+		where USER_MOBILE = #{userMobile}
 	</update>
+
 	<sql id="USER_DATA">
 		USER_ID,USER_NAME,MOBILE,IMAGE_URL
 	</sql>

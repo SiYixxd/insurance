@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -112,13 +113,26 @@ public class UserInfoController {
     }
 
 
+    /**
+     * 短信验证码注册和登陆接口
+     *
+     * @param request request请求中包含了用户的手机号
+     * @return
+     */
+    @PostMapping(value = "/register2", consumes = "application/x-www-form-urlencoded;charset=utf-8")
+    public BaseResponse register2(@RequestParam Map<String, String> request) {
+        log.info("");
+        return null;
+    }
+
+
     @GetMapping("/getUser/{userMobile}")
     public UserInfo userGet(@PathVariable String userMobile) {
         UserInfo userInfo = userInfoService.getUserInfoByUserMobile(userMobile);
         return userInfo;
     }
 
-    //todo 新接口1  用户通过用户id 更新自己的昵称和头像   头像传固定url地址 通过手机号get到userInfo
+    //用户通过用户id 更新自己的昵称和头像   头像传固定url地址 通过手机号get到userInfo
     @PostMapping(value = "/setUseInfo")
     public BaseResponse setUserInfo(@RequestBody SetRequest request) {
         String mobile = request.getMobile();
@@ -136,7 +150,7 @@ public class UserInfoController {
     }
 
     @PostMapping(value = "/setUserPassword")
-    //todo 接口 2 用户设置自己的密码
+    // 用户设置自己的密码
     public BaseResponse setUserPassword(@RequestBody PasswordRequest passwordRequest) {
         //获取用户的输入的密码
         //String password = userInfo.getPassword(); 用户还没有设置密码，现在密码为null，怎么获取？request.get？
@@ -144,7 +158,7 @@ public class UserInfoController {
             String password = passwordRequest.getPassword();
             String mobile = passwordRequest.getMobile();
             String md5Password = MD5Util.encrypt(mobile + password);
-            userInfoService.updateUserPassword(md5Password);
+            userInfoService.updateUserPassword(md5Password,mobile);
             UserInfo userInfo = userInfoService.getUserInfoByUserMobile(mobile);
             userInfo.setPassword(md5Password);
             return new BaseResponse(10000, "密码设置成功");
@@ -152,11 +166,7 @@ public class UserInfoController {
             log.error("未知异常", e);
             return new BaseResponse(10001, "设置异常");
         }
-
     }
-
-
-    //todo PasswordController
 
     /**
      * 新建用户信息

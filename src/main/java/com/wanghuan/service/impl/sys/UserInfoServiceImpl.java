@@ -30,7 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void updateUserPassword(String password) {
-         userInfoDao.updateUserPassword(password);
+    public void updateUserPassword(String password, String mobile) {
+         userInfoDao.updateUserPassword(password,mobile);
     }
 }

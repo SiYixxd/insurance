@@ -121,6 +121,8 @@ public class UserInfoController {
      */
     @PostMapping(value = "/register2", consumes = "application/x-www-form-urlencoded;charset=utf-8")
     public BaseResponse register2(@RequestParam Map<String, String> request) {
+        //这个map的名字叫做request，所以直接从request中过去对象就行了
+        request.get("mobile");
         log.info("");
         return null;
     }
@@ -133,27 +135,41 @@ public class UserInfoController {
     }
 
     //用户通过用户id 更新自己的昵称和头像   头像传固定url地址 通过手机号get到userInfo
-    @PostMapping(value = "/setUseInfo")
+    @PostMapping(value = "/setUserInfo")
     public BaseResponse setUserInfo(@RequestBody SetRequest request) {
-        String mobile = request.getMobile();
-        String imagUrl = request.getImageUrl();
+        String mobile =  request.getMobile();
+        String imageUrl = request.getImageUrl();
         String userName = request.getUserName();
         UserInfo userInfo = new UserInfo();
-        userInfo.setUserMobile(request.getMobile());
+        userInfo.setUserMobile(mobile);
         //获取到userInfo后发现昵称与头像是默认，开始set
         userInfo.setUserName(userName);
-        userInfo.setImageUrl(imagUrl);
+        userInfo.setImageUrl(imageUrl);
+        //设置完成后更新userInfo
+        userInfoService.updateUser(userInfo);
+        //需要把设置完成的信息返回给用户
+        return new BaseResponse(10000, "成功", userInfo,null,null);
+    }
+  /* @PostMapping(value = "/setUserInfo2", consumes = "application/x-www-form-urlencoded;charset=utf-8")
+    public BaseResponse setUserInfo2(@RequestParam Map<String,String> request) {
+        String mobile =  request.get("mobile");
+        String imageUrl = request.get("imageUrl");
+        String userName = request.get("userName");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserMobile(mobile);
+        //获取到userInfo后发现昵称与头像是默认，开始set
+        userInfo.setUserName(userName);
+        userInfo.setImageUrl(imageUrl);
         //设置完成后更新userInfo
         userInfoService.updateUser(userInfo);
         //需要把设置完成的信息返回给用户
         return new BaseResponse(10000, "成功", userInfo);
-    }
+    }*/
 
     @PostMapping(value = "/setUserPassword")
     // 用户设置自己的密码
     public BaseResponse setUserPassword(@RequestBody PasswordRequest passwordRequest) {
         //获取用户的输入的密码
-        //String password = userInfo.getPassword(); 用户还没有设置密码，现在密码为null，怎么获取？request.get？
         try {
             String password = passwordRequest.getPassword();
             String mobile = passwordRequest.getMobile();
@@ -177,18 +193,6 @@ public class UserInfoController {
     @PostMapping("/addUser")
     public UserInfo insertUser(@RequestBody UserInfo userInfo) {
         userInfoService.insertUser(userInfo);
-        return userInfo;
-    }
-
-    /*更新用户信息
-    @param id
-    @return
-    * */
-    @PutMapping("/userInfo/{userId}")
-    public UserInfo updateUser(@RequestBody UserInfo userInfo, @PathVariable String id) {
-        if (userInfo.getUserId() == id) {
-            userInfoService.updateUser(userInfo);
-        }
         return userInfo;
     }
 }

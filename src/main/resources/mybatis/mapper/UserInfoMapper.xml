@@ -26,11 +26,10 @@
 			<if test="imageUrl != null and imageUrl = ''">
 				IMAGE_URL = #{imageUrl},
 			</if>
-
 		</set>
 		WHERE USER_ID = #{userId}
 	</update>
-	<!-- 查询用户信息 -->
+	<!-- 用户设置头像 昵称 -->
 	<select id="selectUserInfo" resultMap="userInfoMap">
 		select * from t_user_info
 		<where>
@@ -52,7 +51,7 @@
 	<update id="updateUserPassword" parameterType="String" >
 		update t_user_info set
 		password= #{password}
-		where USER_MOBILE = #{userMobile}
+		where MOBILE = #{userMobile}
 	</update>
 
 	<sql id="USER_DATA">

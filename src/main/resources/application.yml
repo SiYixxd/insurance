@@ -16,3 +16,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.wanghuan.model
+
+logging:
+  level:
+    com:
+      wanghuan:
+        dao: debug

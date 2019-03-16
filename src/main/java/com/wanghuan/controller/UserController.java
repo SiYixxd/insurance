@@ -31,7 +31,7 @@ public class UserController {
 	@Resource(name = "userServiceImpl")
 	private UserService userService;
 
-	@GetMapping("/user/{loginName}")
+	@GetMapping("/user123/{loginName}")
 	public UserEntity userGet(@PathVariable String loginName) {
 
 

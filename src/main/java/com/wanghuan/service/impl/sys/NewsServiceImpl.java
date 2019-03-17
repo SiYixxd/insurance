@@ -53,7 +53,7 @@ public class NewsServiceImpl implements NewsService {
             start 参数不固定
             第一页 0,19  20,3  1 第二页 ...=> start = pageNum * length
          */
-        //逻辑分页 从数据库中拿出所有符合要求的数据，然后再从这些数据中拿到我们需要的分页数据
+        //第二种 逻辑分页 从数据库中拿出所有符合要求的数据，然后再从这些数据中拿到我们需要的分页数据
         // 说明: new RowBounds(0, 5)，即第一页，每页取5条数据
         //offset:起始行数
         //limit：需要的数据行数

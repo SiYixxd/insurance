@@ -141,6 +141,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<!--公司自己的私服-->
 	</repositories>
 
 	<pluginRepositories>

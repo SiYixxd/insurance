@@ -60,7 +60,13 @@
 		WHERE NEWS_ID = #{newsId}
 	</update>
 
-	<!--后台人员分页查看咨询-->
+	<!--后台人员分页查看咨询
+	 	where 标签能够去除首个if的 and
+	 	多个if条件可以同时判断，但是需要在前面加上AND
+	 	字符串类型判断用null  和 ‘’
+	 	int 判断用 0 或者 -1 或者数字
+	 	date类型判断用null，不能用‘’ 否则报错
+	-->
 	<select id="adminFindPager" parameterType="map" resultMap="newsMap">
 		SELECT * FROM t_news
 		<where>

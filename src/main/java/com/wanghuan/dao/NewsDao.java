@@ -23,7 +23,7 @@ public interface NewsDao {
      * */
     public void removeNews(String newsId);
 
-    /*批量移除咨询 用到了mybatis遍历
+    /*批量移除咨询 用到了mybatis遍历  这里的删除一般都是软删除 即更新一个status字段，查询的时候where 判断领一个状态
      * @param news
      * */
     public void removeMutipleNews(List<String> ids);

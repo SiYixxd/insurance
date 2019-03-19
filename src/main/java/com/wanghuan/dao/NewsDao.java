@@ -52,7 +52,7 @@ public interface NewsDao {
     * 用户查看咨询的部分内容，不需要全部咨询全部信息，
     * */
     //news不返回全部内容，UserNews？
-    List<UserNews> userFindPager(Map<String, Object> map, RowBounds rowBounds);
+    List<News> userFindPager(Map<String, Object> map, RowBounds rowBounds);
 
     /*根据标题查询咨询
      * @param id

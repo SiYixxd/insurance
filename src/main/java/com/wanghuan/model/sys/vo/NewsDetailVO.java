@@ -1,22 +1,21 @@
-package com.wanghuan.controller.request;
+package com.wanghuan.model.sys.vo;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.ibatis.session.RowBounds;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
 @ToString
-public class UserPageRequest implements Serializable {
+public class NewsDetailVO {
     private String newsId;
-    private String userId;
     private String newsTitle;
     private String newsContent;
     private String newsImage;
     private String newsSource;
-    private int page;
+    private Boolean likeFlag;
+    private Boolean dissFlag;
 
+    private int likeCount;
+    private int dissCount;
 }

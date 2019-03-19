@@ -79,6 +79,12 @@
 			<if test="newsSource != null and newsSource!= ''">
 				AND NEWS_SOURCE = #{newsSource}
 			</if>
+			<if test="startTime != null and startTime!= ''">
+				AND CREATE_TIME &gt; #{createTime}
+			</if>
+			<if test="endTime != null and endTime!= ''">
+				AND NEWS_SOURCE &lt; #{createTime}
+			</if>
 		   	AND NEWS_STATUS = 0
 		</where>
 		ORDER BY CREATE_TIME DESC
@@ -101,6 +107,7 @@
     </select>
 
 
+
 	<!--用户分页查看咨询-->
 	<select id="userFindPager" parameterType="map" resultMap="newsMap">
 		SELECT NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE FROM t_news
@@ -117,6 +124,7 @@
 		</where>
 		ORDER BY CREATE_TIME DESC
 	</select>
+
 
 	<!--后台人员通过咨询ID获取咨询-->
 	<select id="findNewsById" resultMap="newsMap" parameterType="String">

@@ -1,26 +1,22 @@
 package com.wanghuan.controller.response;
 
-import com.wanghuan.model.sys.Admin;
-import com.wanghuan.model.sys.UserInfo;
 import lombok.*;
 
 import java.io.Serializable;
-
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponse implements Serializable {
+public class CommentResponse implements Serializable {
+    private long total;
+    private Object list;
+    private boolean endFlag;
     private int code;
     private String message;
-    private UserInfo info;
-    private Admin user;
-    private Object data;
-
-
-    public BaseResponse(int code, String message){
+    private int page;
+    public CommentResponse(int code, String message){
         this.code = code;
         this.message = message;
     }

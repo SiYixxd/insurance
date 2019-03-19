@@ -1,14 +1,21 @@
 package com.wanghuan.controller;
 
+import com.wanghuan.common.Constants;
 import com.wanghuan.controller.request.AdminPageRequest;
+import com.wanghuan.controller.request.LikeOrDissRequest;
 import com.wanghuan.controller.request.NewsRequest;
 import com.wanghuan.controller.request.UserPageRequest;
 import com.wanghuan.controller.response.BaseResponse;
+import com.wanghuan.controller.response.NewsDetailResponse;
 import com.wanghuan.controller.response.NewsResponse;
 import com.wanghuan.model.sys.News;
+import com.wanghuan.model.sys.vo.NewsDetailVO;
+import com.wanghuan.model.sys.vo.NewsVO;
 import com.wanghuan.service.sys.NewsService;
 import com.wanghuan.utils.IdGeneratorUtil;
+import com.wanghuan.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @Slf4j
@@ -23,17 +31,24 @@ public class NewsController {
     @Resource(name = "newsServiceImpl")
     private NewsService newsService;
 
+    @Resource
+    private RedisUtil redisUtil;
+
+    //线程安全的map
+    private ConcurrentHashMap<String, Long> likeCountMap = new ConcurrentHashMap<>();   //key 文章 newsId  value 点赞数
 
     //接口0 后台人员查询文章 分页 按照时间倒叙排序
     //request使用不方便，频繁。用一个写一个？
     @PostMapping(value = "/adminFindPager")
-    public NewsResponse AdminFindNews(@RequestBody AdminPageRequest adminPageRequest) {
+    public NewsResponse adminFindNews(@RequestBody AdminPageRequest adminPageRequest) {
         NewsResponse response = new NewsResponse();
         HashMap<String , Object> map = new HashMap<>();
         map.put("page", adminPageRequest.getPage());
         map.put("newsTitle", adminPageRequest.getNewsTitle());
         map.put("adminUser", adminPageRequest.getAdminUser());
         map.put("newsSource",adminPageRequest.getNewsSource());
+        map.put("startTime",adminPageRequest.getStartTime());
+        map.put("endTime",adminPageRequest.getEndTime());
         List<News>  list =  newsService.adminFindPager(map);
         response.setTotal(newsService.selectCountByMap(map));
         response.setList(list);
@@ -93,13 +108,7 @@ public class NewsController {
         return news;
     }
 
-    //接口3 后台人员查看咨询详情
-    @PostMapping(value = "/newsDetails2")
-    //以ID为参数，怎么解决？String id？
-    public News getNewsDetailsById(String id) {
-        News news = newsService.findNewsById(id);
-        return news;
-    }
+
     //移除一篇咨询
     @PostMapping(value = "/removeNews")
     public BaseResponse removeNews(@RequestBody NewsRequest request) {
@@ -109,7 +118,7 @@ public class NewsController {
             newsService.removeNews(request.getNewsId());
             return response;
         } catch (Exception e) {
-            log.error("修改咨询异常", e);
+            log.error("删除失败", e);
             response.setCode(10001);
             response.setMessage("抱歉，出错了");
             return response;
@@ -134,19 +143,8 @@ public class NewsController {
     }
 
 
-    //用户在APP上查看咨询列表 倒叙 分页
-    @PostMapping(value = "/userFindPager")
-    public List<News> userFindNews(@RequestBody UserPageRequest userPageRequest) {
-        HashMap<String , Object> map = new HashMap<>();
-        map.put("page", userPageRequest.getPage());
-        List<News>  list =  newsService.adminFindPager(map);
-        return list;
-    }
 
 
 
-
-    //....
-    //用户点赞咨询
 
 }

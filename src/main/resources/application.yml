@@ -12,7 +12,8 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
-    password: null
+    max-active: 8
+    min-idle: 0
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.wanghuan.model

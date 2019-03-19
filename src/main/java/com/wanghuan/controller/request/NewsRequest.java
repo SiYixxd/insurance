@@ -3,20 +3,19 @@ package com.wanghuan.controller.request;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.ibatis.session.RowBounds;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
 @ToString
-public class UserPageRequest implements Serializable {
+public class NewsRequest  implements Serializable {
     private String newsId;
-    private String userId;
+    private String adminUser;
     private String newsTitle;
     private String newsContent;
     private String newsImage;
     private String newsSource;
-    private int page;
-
+    private String newsIds;
 }

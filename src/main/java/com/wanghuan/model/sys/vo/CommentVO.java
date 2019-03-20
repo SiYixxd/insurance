@@ -11,5 +11,7 @@ import lombok.ToString;
 public class CommentVO extends Comment {
 
     private String userName;
+    private int likeCount;
+    private int dissCount;
 
 }

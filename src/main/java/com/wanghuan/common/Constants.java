@@ -4,6 +4,11 @@ public class Constants {
 //    响应常量
     public final static int SUCCESS_CODE = 10000;
     public final static String SUCCESS_MESSAGE = "成功";
+    public final static int ERROR_CODE = 10001;
+    public final static String ERROR_MESSAGE = "失败";
+
+    //用户查看文章的一页大小
+    public final static int PAGE_SIZE=5;
 
     //    文章行为常量
     public final static int NEWS_LIKE = 1;

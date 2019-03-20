@@ -36,24 +36,29 @@ public class UserNewsController {
     @PostMapping(value = "/userFindPager")
     public UserNewsResponse userFindNews(@RequestBody UserPageRequest request) {
         UserNewsResponse response = new UserNewsResponse(); //response
-        int pageSize = 5;   //固定 也可以是  前端传递的
-        Boolean endFlag = false;
-        HashMap<String , Object> map = new HashMap<>(); //用于传递数据到service和dao
-        map.put("page", request.getPage());//用户要查看第几页，page就是几
-        //返回一个第二页的list，要多少，查多少。pageSize是20，所以返回20条
-        //可能就返回部分内容。几行文字
-        List<News> list =  newsService.userFindPager(map);  //查询出的当前页数据
-        List<NewsVO> voList = new ArrayList<>();    //准备封装的最后返回的list
-        getLikeAndDissCount(list,voList, request.getNewsId());
-        response.setList(voList);
-        //list.size 小于了20，那么这就是最后一页，endFlag就为true，然后就没有下一页了，就告诉用户，这是最后一页。
-        if(list.size() < 20)
-            endFlag = true; //是否最后一页的判断
-        response.setEndflag(endFlag);
-        response.setList(voList);
-        response.setCode(10000);
-        response.setMessage("成功");
-        return response;//code message ,list, endFlag ,  // page
+        try {
+            Boolean endFlag = false;
+            HashMap<String , Object> map = new HashMap<>(); //用于传递数据到service和dao
+            map.put("page", request.getPage());//用户要查看第几页，page就是几
+            //返回一个第二页的list，要多少，查多少。pageSize是20，所以返回20条
+            //可能就返回部分内容。几行文字
+            List<News> list =  newsService.userFindPager(map);  //查询出的当前页数据
+            List<NewsVO> voList = new ArrayList<>();    //准备封装的最后返回的list
+            getLikeAndDissCount(list,voList, request.getNewsId());//因为点赞数在redis缓存中，而不需要从数据库获取
+            //response.setList(voList);
+            //list.size 小于了5，那么这就是最后一页，endFlag就为true，然后就没有下一页了，就告诉用户，这是最后一页。
+            if(list.size() < Constants.PAGE_SIZE)
+                endFlag = true; //是否最后一页的判断
+            response.setEndflag(endFlag);
+            response.setList(voList);
+            response.setCode(Constants.SUCCESS_CODE);
+            response.setMessage(Constants.SUCCESS_MESSAGE);
+            return response;//code message ,list, endFlag ,  // page
+        } catch (Exception e) {
+            response.setCode(Constants.ERROR_CODE);
+            response.setMessage(Constants.ERROR_MESSAGE);
+            return response;
+        }
     }
 
     /**

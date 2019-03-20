@@ -13,9 +13,10 @@ public class CommentPageRequest implements Serializable {
     private String commentId;
     private String parentId;
     private String commentContent;
-    private String userName;
     private String newsId;
     private int page;
+    private String userId;
+
 
     //添加时间条件查询
     private String startTime;

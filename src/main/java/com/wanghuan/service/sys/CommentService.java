@@ -16,5 +16,11 @@ public interface CommentService  {
     //更新评论
     void updateComment(String commentId);
     //查找评论
-    List<CommentVO>  showComment(Map<String, Object> map);
+    List<Comment>  showComment(Map<String, Object> map);
+    //查找评论 分页显示 leftJoin
+    List<CommentVO> findCommentLeftJoin(Map<String, Object> map);
+    //查看子评论
+    List<CommentVO> findChildComment(String commentId );
+    //通过newsId查看对应的评论列表
+    List<CommentVO> findCommentListByNewsId(String newsId);
 }

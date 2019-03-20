@@ -34,8 +34,7 @@ public class NewsController {
     @Resource
     private RedisUtil redisUtil;
 
-    //线程安全的map
-    private ConcurrentHashMap<String, Long> likeCountMap = new ConcurrentHashMap<>();   //key 文章 newsId  value 点赞数
+
 
     //接口0 后台人员查询文章 分页 按照时间倒叙排序
     //request使用不方便，频繁。用一个写一个？

@@ -1,5 +1,6 @@
 package com.wanghuan.service.impl.sys;
 
+import com.wanghuan.common.Constants;
 import com.wanghuan.dao.CommentDao;
 import com.wanghuan.model.sys.Comment;
 import com.wanghuan.model.sys.vo.CommentVO;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service(value = "commentServiceImpl")
 public class CommentServiceImpl implements CommentService {
@@ -22,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
     private CommentDao commentDao;
     @Autowired
     private UserInfoService userService;
+
     @Override
     public void insertComment(Comment comment) {
         commentDao.insertComment(comment);
@@ -38,21 +41,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentVO> showComment(Map<String, Object> map) {
-        int pageIndex =Integer.valueOf(map.get("page").toString()); //0
-        int pageSize = 5;
-        //条数
-        List<Comment> commentList = commentDao.showComment(map,new RowBounds(pageIndex*pageSize, pageSize));
-       //第二种获取userName的方法
-        List<CommentVO> commentVOList = new ArrayList<>();
-        commentList.forEach(comment -> {
-            CommentVO vo = new CommentVO();
-            BeanUtils.copyProperties(comment, vo);
-            //todo
-//            UserInfo userInfo = userService.findByUserId(comment.getUserId());
-            vo.setUserName("");
-        });
+    public List<Comment> showComment(Map<String, Object> map) {
+        int pageIndex = Integer.valueOf(map.get("page").toString());
+        List<Comment> commentList = commentDao.showComment(map, new RowBounds(pageIndex * Constants.PAGE_SIZE, Constants.PAGE_SIZE));
+        return commentList;
+    }
 
+    @Override
+    public List<CommentVO> findCommentLeftJoin(Map<String, Object> map) {
+        int pageIndex = Integer.valueOf(map.get("page").toString());
+        List<CommentVO> commentVOList = commentDao.findCommentLeftJoin(map, new RowBounds(pageIndex * Constants.PAGE_SIZE, Constants.PAGE_SIZE));
+        return commentVOList;
+    }
+
+    @Override
+    public List<CommentVO> findChildComment(String commentId) {
+        List<CommentVO> childCommentVOList = commentDao.findChildComment(commentId);
+        return childCommentVOList;
+    }
+
+    @Override
+    public List<CommentVO> findCommentListByNewsId(String newsId) {
+        List<CommentVO> commentVOList = commentDao.findCommentListByNewsId(newsId);
         return commentVOList;
     }
 

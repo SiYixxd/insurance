@@ -1,6 +1,7 @@
 package com.wanghuan.dao;
 
 import com.wanghuan.model.sys.Comment;
+import com.wanghuan.model.sys.vo.CommentVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
@@ -18,10 +19,11 @@ public interface CommentDao {
     void updateComment(String commentId);
     //查找评论 分页显示
     List<Comment> showComment(Map<String, Object> map, RowBounds rowBounds);
+    //查找评论 分页显示 leftJoin
+    List<CommentVO> findCommentLeftJoin(Map<String, Object> map, RowBounds rowBounds);
 
-    List<Comment> findCommentLeftJoin(Map<String, Object> map, RowBounds rowBounds);
-
-
-    //点赞评论
-
+    //查看子评论
+    List<CommentVO> findChildComment(String commentId );
+    //通过newsId查看对应的评论列表
+    List<CommentVO> findCommentListByNewsId(String newsId);
 }

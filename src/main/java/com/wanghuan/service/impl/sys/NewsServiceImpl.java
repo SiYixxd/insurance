@@ -1,5 +1,6 @@
 package com.wanghuan.service.impl.sys;
 
+import com.wanghuan.common.Constants;
 import com.wanghuan.dao.NewsDao;
 import com.wanghuan.model.sys.News;
 import com.wanghuan.model.sys.UserNews;
@@ -34,10 +35,10 @@ public class NewsServiceImpl implements NewsService {
     //用户分页查看咨询
     public  List<News> userFindPager(Map<String, Object> map){
         int pageIndex =Integer.valueOf(map.get("page").toString());
-        int pageSize = 5;
-        List<News> userPageageNews = newsDao.userFindPager(map,new RowBounds(pageIndex*pageSize, pageSize));
+        List<News> userPageageNews = newsDao.userFindPager(map,new RowBounds(pageIndex* Constants.PAGE_SIZE, Constants.PAGE_SIZE));
         return userPageageNews;
     }
+
     @Override
     public News findNewsByAdminUser(String adminUser) {
         return newsDao.findNewsByAdminUser(adminUser);

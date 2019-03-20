@@ -10,7 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentResponse implements Serializable {
-    private long total;
     private Object list;
     private boolean endFlag;
     private int code;

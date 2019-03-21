@@ -12,11 +12,11 @@ import java.util.Date;
 @Setter
 @ToString
 public class UserInfo implements Serializable {
-    private String pkSid;
-    private String userId;
+    private String pkSid;//数据库自增长
+    private String userId;//uuid生成
     private String userName;
     private String userMobile;
     private String imageUrl;
-    private Date createTime;
-    private String password;
+    private Date createTime;//new date
+    private String password;//md5
 }

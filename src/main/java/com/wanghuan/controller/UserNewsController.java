@@ -7,7 +7,6 @@ import com.wanghuan.controller.response.BaseResponse;
 import com.wanghuan.controller.response.NewsDetailResponse;
 import com.wanghuan.controller.response.UserNewsResponse;
 import com.wanghuan.model.sys.News;
-import com.wanghuan.model.sys.UserNews;
 import com.wanghuan.model.sys.vo.NewsDetailVO;
 import com.wanghuan.model.sys.vo.NewsVO;
 import com.wanghuan.service.sys.NewsService;
@@ -43,6 +42,13 @@ public class UserNewsController {
             //返回一个第二页的list，要多少，查多少。pageSize是20，所以返回20条
             //可能就返回部分内容。几行文字
             List<News> list =  newsService.userFindPager(map);  //查询出的当前页数据
+            //遍历list，
+            list.forEach(news -> {
+                //得到文章内容
+                String content = news.getNewsContent();
+                //切割文章内容，切割前100个字符。
+                String shortContent = StringUtils.substring(content,0,100);
+            });
             List<NewsVO> voList = new ArrayList<>();    //准备封装的最后返回的list
             getLikeAndDissCount(list,voList, request.getNewsId());//因为点赞数在redis缓存中，而不需要从数据库获取
             //response.setList(voList);

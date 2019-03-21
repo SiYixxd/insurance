@@ -1,60 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wanghuan.dao.UserInfoDao">
-	<resultMap id="userInfoMap" type="com.wanghuan.model.sys.UserInfo">
-		<id column="PK_SID" property="pkSid" />
-		<result column="USER_ID" property="userId" />
-		<result column="USER_NAME" property="userName" />
-		<result column="MOBILE" property="userMobile" />
-		<result column="IMAGE_URL" property="imageUrl" />
-		<result column="CREATE_TIME" property="createTime" />
-		<result column="password" property="password" />
-	</resultMap>
-	<!-- 新建用户信息 -->
-	<insert id="insertUser" parameterType="com.wanghuan.model.sys.UserInfo">
-		insert into t_user_info (PK_SID, USER_ID, USER_NAME, MOBILE,IMAGE_URL, CREATE_TIME, PASSWORD)
-		VALUES (#{pkSid},#{userId},#{userName},#{userMobile},#{imageUrl},#{createTime},#{password})
-	</insert>
+    <resultMap id="userInfoMap" type="com.wanghuan.model.sys.UserInfo">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="MOBILE" property="userMobile"/>
+        <result column="IMAGE_URL" property="imageUrl"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="password" property="password"/>
+    </resultMap>
+    <!-- 新建用户信息 -->
+    <insert id="insertUser" parameterType="com.wanghuan.model.sys.UserInfo">
+        insert into t_user_info (PK_SID, USER_ID, USER_NAME, MOBILE,IMAGE_URL, CREATE_TIME, PASSWORD)
+        VALUES (#{pkSid},#{userId},#{userName},#{userMobile},#{imageUrl},#{createTime},#{password})
+    </insert>
 
-	<!-- 更新用户信息 -->
-	<update id="updateUser" parameterType="com.wanghuan.model.sys.UserInfo" >
-		update t_user_info
-		<set>
-			<if test="userName != null and userName = ''">
-				USER_NAME = #{userName},
-			</if>
-			<if test="imageUrl != null and imageUrl = ''">
-				IMAGE_URL = #{imageUrl},
-			</if>
-		</set>
-		WHERE USER_ID = #{userId}
-	</update>
-	<!-- 用户设置头像 昵称 -->
-	<select id="selectUserInfo" resultMap="userInfoMap">
-		select * from t_user_info
-		<where>
-			<if test="PK_SID != null">PK_SID = #{pkSid}</if>
-			<if test="USER_ID != null">and USER_ID = #{userId}</if>
-			<if test="USER_NAME != null">and USER_NAME = #{userName}</if>
-			<if test="MOBILE != null">and MOBILE = #{userMobile}</if>
-		</where>
-	</select>
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="com.wanghuan.model.sys.UserInfo">
+        update t_user_info
+        <set>
+            <if test="userName != null and userName = ''">
+                USER_NAME = #{userName},
+            </if>
+            <if test="imageUrl != null and imageUrl = ''">
+                IMAGE_URL = #{imageUrl},
+            </if>
+        </set>
+        WHERE USER_ID = #{userId}
+    </update>
+    <!-- 用户设置头像 昵称 -->
+    <select id="selectUserInfo" resultMap="userInfoMap">
+        select * from t_user_info
+        <where>
+            <if test="PK_SID != null">
+                PK_SID = #{pkSid}
+            </if>
+            <if test="USER_ID != null">and USER_ID = #{userId}</if>
+            <if test="USER_NAME != null">and USER_NAME = #{userName}</if>
+            <if test="MOBILE != null">and MOBILE = #{userMobile}</if>
+        </where>
+    </select>
 
-	<select id="getUserInfoByUserMobile" resultMap="userInfoMap" parameterType="String">
-		select <include refid="USER_DATA"></include> from t_user_info
-		<where>
-			MOBILE = #{userMobile}
-		</where>
-	</select>
+    <select id="getUserInfoByUserMobile" resultMap="userInfoMap" parameterType="String">
+        select <include refid="USER_DATA"></include> from t_user_info
+        <where>
+            MOBILE = #{userMobile}
+        </where>
+    </select>
 
-	<!-- 更新用户密码 -->
-	<update id="updateUserPassword" parameterType="String" >
-		update t_user_info set
-		password= #{password}
-		where MOBILE = #{userMobile}
-	</update>
+    <!-- 更新用户密码 -->
+    <update id="updateUserPassword" parameterType="String">
+        update t_user_info set
+        password= #{password}
+        where MOBILE = #{userMobile}
+    </update>
 
-	<sql id="USER_DATA">
-		USER_ID,USER_NAME,MOBILE,IMAGE_URL
-	</sql>
+    <sql id="USER_DATA">
+        USER_ID,USER_NAME,MOBILE,IMAGE_URL
+    </sql>
 </mapper>

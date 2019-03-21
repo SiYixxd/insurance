@@ -101,15 +101,15 @@ public class UserCommentController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/findCommentLeftJoin")
-    public CommentResponse findCommentLeftJoin(@RequestBody CommentPageRequest request) {
+    @PostMapping(value = "/findCommentList")
+    public CommentResponse findCommentList(@RequestBody CommentPageRequest request) {
         CommentResponse response = new CommentResponse();
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("page", request.getPage());
             map.put("userName", request.getPage());
             map.put("commentContent", request.getCommentContent());
-            List<CommentVO> list = commentService.findCommentLeftJoin(map);
+            List<CommentVO> list = commentService.findCommentList(map);
            List<CommentVO> voList = new ArrayList<>();
           /*  因为需要返回点赞数，需要遍历一下newslisit把数据copy到volist中，再加上点赞数。
            而comment目前没有，所以不需要多此一举。

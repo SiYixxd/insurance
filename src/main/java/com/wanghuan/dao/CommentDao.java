@@ -20,7 +20,7 @@ public interface CommentDao {
     //查找评论 分页显示
     List<Comment> showComment(Map<String, Object> map, RowBounds rowBounds);
     //查找评论 分页显示 leftJoin
-    List<CommentVO> findCommentLeftJoin(Map<String, Object> map, RowBounds rowBounds);
+    List<CommentVO> findCommentList(Map<String, Object> map, RowBounds rowBounds);
 
     //查看子评论
     List<CommentVO> findChildComment(String commentId );

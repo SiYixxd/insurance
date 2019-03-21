@@ -6,7 +6,7 @@ import com.wanghuan.service.sys.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+@Transactional
 @Service(value = "userInfoServiceImpl")
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
@@ -19,7 +19,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    @Transactional
+
     public void updateUser(UserInfo userInfo) {
         userInfoDao.updateUser(userInfo);
     }

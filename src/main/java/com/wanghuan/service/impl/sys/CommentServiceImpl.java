@@ -48,9 +48,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentVO> findCommentLeftJoin(Map<String, Object> map) {
+    public List<CommentVO> findCommentList(Map<String, Object> map) {
         int pageIndex = Integer.valueOf(map.get("page").toString());
-        List<CommentVO> commentVOList = commentDao.findCommentLeftJoin(map, new RowBounds(pageIndex * Constants.PAGE_SIZE, Constants.PAGE_SIZE));
+        List<CommentVO> commentVOList = commentDao.findCommentList(map, new RowBounds(pageIndex * Constants.PAGE_SIZE, Constants.PAGE_SIZE));
         return commentVOList;
     }
 
@@ -63,6 +63,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentVO> findCommentListByNewsId(String newsId) {
         List<CommentVO> commentVOList = commentDao.findCommentListByNewsId(newsId);
+        commentVOList.forEach(commentVO -> {
+
+        });
         return commentVOList;
     }
 

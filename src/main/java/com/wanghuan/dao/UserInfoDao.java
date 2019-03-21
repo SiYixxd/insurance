@@ -21,6 +21,8 @@ public interface UserInfoDao {
      * @param userInfo
      */
     public void updateUser( UserInfo userInfo);
+    //void removeUser(String userId);
+
     /*更新用户密码
     *@param password
     * */

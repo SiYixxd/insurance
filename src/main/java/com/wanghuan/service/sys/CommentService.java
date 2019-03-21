@@ -18,7 +18,7 @@ public interface CommentService  {
     //查找评论
     List<Comment>  showComment(Map<String, Object> map);
     //查找评论 分页显示 leftJoin
-    List<CommentVO> findCommentLeftJoin(Map<String, Object> map);
+    List<CommentVO> findCommentList(Map<String, Object> map);
     //查看子评论
     List<CommentVO> findChildComment(String commentId );
     //通过newsId查看对应的评论列表

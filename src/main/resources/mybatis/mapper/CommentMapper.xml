@@ -96,7 +96,7 @@
 
 	<!--
      查看子评论，返回一个评论list ，where parentId= commentId
-
+-->
 	<select id="findChildComment" parameterType="String" resultMap="commentMap">
 		SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
 		LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
@@ -108,11 +108,11 @@
 		</where>
 		ORDER BY CREATE_TIME DESC
 	</select>
--->
 
-	<!--根据newId分页查看评论
 
-	<select id="findCommentListByNewsId" parameterType="String" resultMap="CommentMap">
+	<!--根据newId分页查看评论-->
+
+	<select id="findCommentListByNewsId" parameterType="String" resultMap="commentMap">
 		SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
 		LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
 		<where>
@@ -123,5 +123,5 @@
 		</where>
 		ORDER BY CREATE_TIME DESC
 	</select>
--->
+
 </mapper>

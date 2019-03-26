@@ -10,10 +10,14 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class InsuranceCategory implements Serializable {
+public class PlanItem implements Serializable {
     private String pkSid;
     private Date createTime;
     private int deleteStatus;
-    private String categoryId;
-    private String categoryName;
+    private String planName;
+    private String planInsurPrice;
+    private String planInfo;
+    private String planId;
+
+
 }

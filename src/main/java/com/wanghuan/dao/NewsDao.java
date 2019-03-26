@@ -16,22 +16,22 @@ public interface NewsDao {
     /*增加一篇新资讯
     @param news
     * */
-    public void insertNews(News news);
+     void insertNews(News news);
 
     /*根据ID删除一篇咨询
      * @param news
      * */
-    public void removeNews(String newsId);
+    void removeNews(String newsId);
 
     /*批量移除咨询 用到了mybatis遍历  这里的删除一般都是软删除 即更新一个status字段，查询的时候where 判断领一个状态
      * @param news
      * */
-    public void removeMutipleNews(List<String> ids);
+    void removeMutipleNews(List<String> ids);
 
     /*更新一篇咨询
     * @param news
     * */
-    public void updateNews(News news);
+     void updateNews(News news);
 
     /*后台人员分页查看咨询
      * */
@@ -40,7 +40,7 @@ public interface NewsDao {
     /*根据id查询咨询
      * @param id
      * */
-    public News findNewsById(@Param("newsId") String id);
+     News findNewsById(@Param("newsId") String id);
 
     /*根据AdminUser查询咨询
      * @param adminUser

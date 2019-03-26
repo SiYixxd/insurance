@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.UserContactDao">
+    <resultMap id="userContactMap" type="com.wanghuan.model.sys.UserContact">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="CONTACT_NAME" property="contactName"/>
+        <result column="CONTACT_EMAIL" property="contactEmail"/>
+        <result column="CONTACT_MOBILE" property="contactMobile"/>
+        <result column="CONTACT_IDNUMBER" property="contactIdNumber"/>
+        <result column="USER_ID" property="userId"/>
+    </resultMap>
+
+
+    <!-- 新建联系人 -->
+    <insert id="insertContact" parameterType="com.wanghuan.model.sys.UserContact">
+        insert into t_insurance_user_contact (PK_SID, CREATE_TIME, DELETE_STATUS,CONTACT_NAME,CONTACT_EMAIL,CONTACT_MOBILE,
+        CONTACT_IDNUMBER,USER_ID)
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{contactName}, #{contactEmail},
+         #{contactMobile}, #{contactIdNumber}, #{userId})
+    </insert>
+
+
+    <!--移除联系人-->
+    <update id="removeContact" parameterType="String">
+        update t_insurance_user_contact
+        <set>
+            DELETE_STATUS = 1
+        </set>
+        where CONTACT_IDNUMBER=#{contactIdNumber}
+    </update>
+
+
+    <!--更新联系人信息-->
+    <update id="updateContact" parameterType="com.wanghuan.model.sys.UserContact" >
+        update t_insurance_user_contact
+        <set>
+            <if test="contactName != null and contactName != ''">
+                CONTACT_NAME = #{contactName},
+            </if>
+            <if test="contactEmail != null and contactEmail != ''">
+                CONTACT_EMAIL = #{contactEmail},
+            </if>
+            <if test="contactMobile != null and contactMobile != ''">
+                CONTACT_MOBILE = #{contactMobile},
+            </if>
+        </set>
+        WHERE CONTACT_IDNUMBER = #{contactIdNumber}
+    </update>
+
+
+
+<!--通过用户id查询联系人信息 返回一个列表-->
+    <select id="findContactByUserId" resultMap="userContactMap" parameterType="String">
+        select CONTACT_NAME,CONTACT_EMAIL,CONTACT_MOBILE,
+        CONTACT_IDNUMBER from t_insurance_user_contact
+        <where>
+            USER_ID=#{userId}
+            AND   DELETE_STATUS =0
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,9 +1,11 @@
 package com.wanghuan.controller;
 
+import com.wanghuan.common.Constants;
 import com.wanghuan.common.SmsCode;
 import com.wanghuan.controller.request.PasswordRequest;
 import com.wanghuan.controller.request.SetRequest;
 import com.wanghuan.controller.request.RegisterRequest;
+import com.wanghuan.controller.request.SignRequest;
 import com.wanghuan.controller.response.BaseResponse;
 import com.wanghuan.model.sys.MessageInfo;
 import com.wanghuan.model.sys.UserInfo;
@@ -11,6 +13,7 @@ import com.wanghuan.service.sys.MessageInfoService;
 import com.wanghuan.service.sys.RegistService;
 import com.wanghuan.service.sys.UserInfoService;
 import com.wanghuan.utils.MD5Util;
+import com.wanghuan.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,9 @@ public class UserInfoController {
 
     @Autowired
     private RegistService registService;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 获取验证码
@@ -195,4 +201,40 @@ public class UserInfoController {
         userInfoService.insertUser(userInfo);
         return userInfo;
     }
+
+
+
+   /* *//**
+     * APP 签到接口
+     * @param request
+     * @return
+     *//*
+    @PostMapping(value = "/userSign")
+    //todo 点赞可以点了在取消，签到签了之后不能取消怎么实现？
+    public BaseResponse userSign(@RequestBody SignRequest request) {
+        BaseResponse response = new BaseResponse();
+        try{
+            if(request.getAct() == Constants.SIGN_TRUE){
+                // 签到
+                //记录签到缓存 key是唯一的，
+                redisUtil.hset(Constants.CACHE_SIGN_ACT_TRUE , request.getUserId(), "1");
+                redisUtil.hset(request.getUserId(),这是该用户第几天签到,"1");//表示该用户已经签到
+                //签到的时候把未签到的状态删除
+                redisUtil.hdel(Constants.CACHE_SIGN_ACT_FALSE,request.getUserId());
+            }else {
+                //没签到
+                //未签到的时候把未签到的状态删除
+                redisUtil.hset(Constants.CACHE_SIGN_ACT_FALSE, request.getUserId(), "0");
+                redisUtil.hdel(Constants.CACHE_SIGN_ACT_TRUE , request.getUserId());
+            }
+            response.setCode(Constants.SUCCESS_CODE);
+            response.setMessage(Constants.SUCCESS_MESSAGE);
+            return response;
+        }catch (Exception e){
+            response.setCode(10001);
+            response.setMessage(Constants.ERROR_MESSAGE);
+            return response;
+        }
+    }*/
+
 }

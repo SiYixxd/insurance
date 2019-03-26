@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.InsurancePlanDao">
+    <resultMap id="insurancePlanMap" type="com.wanghuan.model.sys.InsurancePlan">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="PLAN_NAME" property="planName"/>
+        <result column="INSURANCE_ID" property="insuranceId"/>
+        <result column="PLAN_ID" property="planId"/>
+        <result column="PLAN_PRICE" property="planPrice"/>
+    </resultMap>
+
+    <resultMap id="insurancePlanVOMap" type="com.wanghuan.model.sys.vo.PlanVO">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="PLAN_NAME" property="planName"/>
+        <result column="INSURANCE_ID" property="insuranceId"/>
+        <result column="PLAN_ID" property="planId"/>
+        <result column="PLAN_PRICE" property="planPrice"/>
+    </resultMap>
+
+    <!-- 新建保险计划 -->
+    <insert id="insertPlan" parameterType="com.wanghuan.model.sys.InsurancePlan">
+        insert into t_insurance_plan (PK_SID, CREATE_TIME, DELETE_STATUS,INSURANCE_ID,PLAN_NAME,PLAN_ID,PLAN_PRICE)
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus},  #{insuranceId}, #{planName}, #{planId},  #{planPrice})
+    </insert>
+
+  <!--移除一个保险计划-->
+    <update id="removePlan" parameterType="String">
+        update t_insurance_plan
+        <set>
+            DELETE_STATUS = 1
+        </set>
+        where PLAN_ID=#{planId}
+    </update>
+
+    <!--更新保险计划-->
+    <update id="updatePlan" parameterType="com.wanghuan.model.sys.InsurancePlan">
+        update t_insurance_plan
+        <set>
+            <if test="planName != null and planName!='' " >
+                PLAN_NAME=#{planName},
+            </if>
+            <if test="planPrice !=null and planPrice!=''  ">
+                PLAN_PRICE=#{planPrice}
+            </if>
+            <if test="planInsurancePrice !=null and planInsurancePrice!=''  ">
+                PLAN_INSURANCE_PRICE=#{planInsurancePrice}
+            </if>
+            <if test="planInfo !=null and planInfo!=''  ">
+                PLAN_INFO=#{planInfo}
+            </if>
+        </set>
+        where  PLAN_ID=#{planId}
+    </update>
+
+
+<!--通过保险计划id查询保险计划-->
+    <select id="findPlanById" resultMap="insurancePlanMap" parameterType="String">
+        select PLAN_NAME,PLAN_ID,PLAN_PRICE,PLAN_INSURANCE_PRICE,PLAN_INFO  from t_insurance_plan
+        <where>
+            PLAN_ID = #{planId}
+            AND   DELETE_STATUS =0
+
+        </where>
+    </select>
+
+
+    <!--通过保险id查询其所属的保险计划有哪些-->
+    <select id="findPlanVOByInsuranceId"  resultMap="insurancePlanVOMap" parameterType="String">
+        select PLAN_NAME,PLAN_ID,PLAN_PRICE  from t_insurance_plan
+        <where>
+            INSURANCE_ID = #{insuranceId}
+            AND   DELETE_STATUS =0
+        </where>
+    </select>
+
+</mapper>

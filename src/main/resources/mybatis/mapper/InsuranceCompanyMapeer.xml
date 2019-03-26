@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.InsuranceCompanyDao">
+    <resultMap id="insuranceCompanyMap" type="com.wanghuan.model.sys.InsuranceCompany">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="COMPANY_NAME" property="companyName"/>
+        <result column="COMPANY_LOGO" property="companyLogo"/>
+    </resultMap>
+    <!-- 新建保险公司 -->
+    <insert id="insertCompany" parameterType="com.wanghuan.model.sys.InsuranceCompany">
+        insert into t_insurance_company (PK_SID, CREATE_TIME, DELETE_STATUS, COMPANY_ID, COMPANY_NAME, COMPANY_LOGO)
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{companyId}, #{companyName}, #{companyLogo})
+    </insert>
+
+    <!--移除一个公司-->
+    <update id="removeCompany" parameterType="String">
+        update t_insurance_company
+        <set>
+            DELETE_STATUS = 1
+        </set>
+        where COMPANY_ID=#{companyId}
+    </update>
+
+    <!--更新公司信息-->
+    <update id="updateCompany" parameterType="com.wanghuan.model.sys.InsuranceCompany">
+        update t_insurance_company
+        <set>
+            <if test="companyName != null and companyName!='' " >
+                COMPANY_NAME=#{companyName},
+            </if>
+            <if test="companyLogo !=null and companyLogo!=''  ">
+                COMPANY_LOGO=#{companyLogo}
+            </if>
+        </set>
+        where  COMPANY_ID=#{companyId}
+    </update>
+
+
+<!--通过公司id查询公司信息-->
+    <select id="findCompanyById" resultMap="insuranceCompanyMap" parameterType="String">
+        select COMPANY_NAME,COMPANY_LOGO from t_insurance_company
+        <where>
+            COMPANY_ID = #{companyId}
+            AND   DELETE_STATUS =0
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,19 +1,15 @@
-package com.wanghuan.model.sys;
+package com.wanghuan.controller.request;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
 @ToString
-public class InsuranceCompany implements Serializable {
-    private String pkSid;
-    private Date createTime;
-    private int deleteStatus;
+public class CompanyRequest implements Serializable {
     private String companyId;
     private String companyName;
     private String companyLogo;

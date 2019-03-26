@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.InsuranceItemDao">
+    <resultMap id="insuranceItemMap" type="com.wanghuan.model.sys.InsuranceItem">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="INSURANCE_NAME" property="insuranceName"/>
+        <result column="INSURANCE_ID" property="insuranceId"/>
+        <result column="INSURANCE_RANGE" property="insuranceRange"/>
+        <result column="INSURANCE_MIN" property="insuranceMin"/>
+        <result column="INSURANCE_MAX" property="insuranceMax"/>
+        <result column="INSURANCE_LIMIT" property="insuranceLimit"/>
+        <result column="INSURANCE_DETAIL" property="insuranceDetail"/>
+        <result column="INSURANCE_RULES" property="insuranceRules"/>
+        <result column="INSURANCE_SUMMARY" property="insuranceSummary"/>
+        <result column="INSURANCE_BANNER" property="insuranceBanner"/>
+        <result column="COMPANY_ID" property="companyId"/>
+    </resultMap>
+
+    <!--列表用map-->
+    <resultMap id="insuranceItemVOMap" type="com.wanghuan.model.sys.vo.InsuranceItemVO">
+        <result column="INSURANCE_NAME" property="insuranceName"/>
+        <result column="INSURANCE_RANGE" property="insuranceRange"/>
+        <result column="INSURANCE_MIN" property="insuranceMin"/>
+        <result column="INSURANCE_MAX" property="insuranceMax"/>
+        <result column="INSURANCE_LIMIT" property="insuranceLimit"/>
+        <result column="INSURANCE_DETAIL" property="insuranceDetail"/>
+        <result column="INSURANCE_RULES" property="insuranceRules"/>
+        <result column="INSURANCE_SUMMARY" property="insuranceSummary"/>
+        <result column="INSURANCE_BANNER" property="insuranceBanner"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="COMPANY_NAME" property="companyName"/>
+    </resultMap>
+
+    <!--详情map-->
+    <resultMap id="insuranceItemDetailMap" type="com.wanghuan.model.sys.vo.InsuranceDetailVO">
+        <result column="INSURANCE_NAME" property="insuranceName"/>
+        <result column="INSURANCE_RANGE" property="insuranceRange"/>
+        <result column="INSURANCE_MIN" property="insuranceMin"/>
+        <result column="INSURANCE_MAX" property="insuranceMax"/>
+        <result column="INSURANCE_LIMIT" property="insuranceLimit"/>
+        <result column="INSURANCE_DETAIL" property="insuranceDetail"/>
+        <result column="INSURANCE_RULES" property="insuranceRules"/>
+        <result column="INSURANCE_SUMMARY" property="insuranceSummary"/>
+        <result column="INSURANCE_BANNER" property="insuranceBanner"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="COMPANY_NAME" property="companyName"/>
+
+        <collection property="planList" ofType="com.wanghuan.model.sys.vo.PlanVO">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <id column="PK_SID" property="pkSid"/>
+            <result column="CREATE_TIME" property="createTime"/>
+            <result column="DELETE_STATUS" property="deleteStatus"/>
+            <result column="PLAN_NAME" property="planName"/>
+            <result column="INSURANCE_ID" property="insuranceId"/>
+            <result column="PLAN_ID" property="planId"/>
+            <result column="PLAN_PRICE" property="planPrice"/>
+            <result column="PLAN_INFO" property="planInfo"/>
+            <collection property="itemList" ofType="com.wanghuan.model.sys.PlanItem">
+                <id column="PK_SID" property="pkSid"/>
+                <result column="CREATE_TIME" property="createTime"/>
+                <result column="DELETE_STATUS" property="deleteStatus"/>
+                <result column="PLAN_NAME" property="planName"/>
+                <result column="PLAN_INSUR_PRICE" property="planInsurPrice"/>
+                <result column="PLAN_INFO" property="planInfo"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!-- 新建保险 -->
+    <insert id="insertInsurance" parameterType="com.wanghuan.model.sys.InsuranceItem">
+        insert into t_insurance_item (PK_SID, CREATE_TIME, DELETE_STATUS, COMPANY_ID, INSURANCE_NAME, INSURANCE_ID,INSURANCE_RANGE,INSURANCE_MIN,INSURANCE_MAX,
+        INSURANCE_LIMIT,INSURANCE_DETAIL,INSURANCE_RULES,INSURANCE_SUMMARY,INSURANCE_BANNER)
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{companyId}, #{insuranceName}, #{insuranceId}, #{insuranceRange}, #{insuranceMin},
+        #{insuranceMax}, #{insuranceLimit}, #{insuranceDetail}, #{insuranceRules}, #{insuranceSummary}, #{insuranceBanner})
+    </insert>
+
+    <!--移除一个保险-->
+    <update id="removeInsurance" parameterType="String">
+        update t_insurance_item
+        <set>
+            DELETE_STATUS = 1
+        </set>
+        where INSURANCE_ID=#{insuranceId}
+    </update>
+
+    <!--更新保险信息-->
+    <update id="updateInsurance" parameterType="com.wanghuan.model.sys.InsuranceItem">
+        update t_insurance_item
+        <set>
+            <if test="insuranceName != null and insuranceName!='' ">
+                COMPANY_NAME=#{insuranceName},
+            </if>
+            <if test="insuranceRange !=null and insuranceRange!=''  ">
+                INSURANCE_RANGE=#{insuranceRange}
+            </if>
+            <if test="insuranceMin !=null and insuranceMin!=''  ">
+                INSURANCE_MIN=#{insuranceMin}
+            </if>
+            <if test="insuranceMax !=null and insuranceMax!=''  ">
+                INSURANCE_MAX=#{insuranceMax}
+            </if>
+            <if test="insuranceLimit !=null and insuranceLimit!=''  ">
+                INSURANCE_LIMIT=#{insuranceLimit}
+            </if>
+            <if test="insuranceDetail !=null and insuranceDetail!=''  ">
+                INSURANCE_DETAIL=#{insuranceDetail}
+            </if>
+            <if test="insuranceRules !=null and insuranceRules!=''  ">
+                INSURANCE_RULES=#{insuranceRules}
+            </if>
+            <if test="insuranceSummary !=null and insuranceSummary!=''  ">
+                INSURANCE_SUMMARY=#{insuranceSummary}
+            </if>
+            <if test="insuranceBanner !=null and insuranceBanner!=''  ">
+                INSURANCE_BANNER=#{insuranceBanner}
+            </if>
+        </set>
+        where INSURANCE_ID=#{insuranceId}
+    </update>
+
+<!--
+    通过保险id查询保险信息-->
+    <select id="findInsuranceById" resultMap="insuranceItemVOMap" parameterType="String">
+        select tii.INSURANCE_NAME,tii.INSURANCE_RANGE,tii.INSURANCE_MIN,tii.INSURANCE_MAX,
+        tii.INSURANCE_LIMIT,tii.INSURANCE_DETAIL,tii.INSURANCE_RULES,tii.INSURANCE_SUMMARY,tii.INSURANCE_BANNER,
+        tic.COMPANY_NAME
+        from t_insurance_item tii
+        LEFT JOIN t_insurance_company tic ON tii.COMPANY_ID =tic.COMPANY_ID
+        <where>
+            tii.INSURANCE_ID = #{insuranceId}
+            AND tii.DELETE_STATUS =0
+        </where>
+    </select>
+
+    <!--通过categoryId查询出保险item详情-->
+
+    <select id="findInsuranceCategory" resultMap="insuranceItemVOMap" parameterType="String">
+        SELECT tii.* , tiic.CATEGORY_ID, tic.CATEGORY_NAME FROM t_insurance_item_category tiic
+        LEFT JOIN t_insurance_item tii ON tiic.INSURANCE_ID = tii.INSURANCE_ID
+        LEFT JOIN t_insurance_category tic ON tic.CATEGORY_ID = tiic.CATEGORY_ID
+        WHERE tiic.CATEGORY_ID = #{categoryId}
+    </select>
+
+
+    <select id="findInsuranceDetail" resultMap="insuranceItemDetailMap" parameterType="String">
+        SELECT tii.*, tip.*, tpppp.* FROM t_insurance_item tii
+        LEFT JOIN t_insurance_plan tip on tii.INSURANCE_ID = tip.INSURANCE_ID
+        LEFT JOIN t_plan_item tpppp on tpppp.PLAN_ID = tip.PLAN_ID
+        WHERE tii.INSURANCE_ID = #{insuranceId}
+    </select>
+
+
+
+
+
+    <!--
+        <select id="findInsuranceCategory2" resultMap="InsuranceVOMap" parameterType="String">
+            SELECT * FROM t_insurance_item tiic
+            WHERE INSURANCE_ID IN (
+                  SELECT INSURANCE_ID FROM t_insurance_item_category WHERE CATEGORY_ID = #{categoryId}
+                )
+        </select>
+
+
+
+        <select id="findInsuranceByCategoryId" parameterType="list"  resultMap="InsuranceVOMap" >
+            SELECT * from t_insurance_item where
+            <foreach collection="list" item="insuranceId" open="INSURANCE_ID IN ( " close=" ) " separator=",">
+                #{insuranceId}
+            </foreach>
+        </select>
+
+    -->
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.PlanItemDao">
+    <resultMap id="planItemMap" type="com.wanghuan.model.sys.PlanItem">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="DELETE_STATUS" property="deleteStatus"/>
+        <result column="PLAN_NAME" property="planName"/>
+        <result column="PLAN_INSUR_PRICE" property="planInsurPrice"/>
+        <result column="PLAN_ID" property="planId"/>
+        <result column="PLAN_INFO" property="planInfo"/>
+    </resultMap>
+
+    <select id="findByPlanId" resultMap="planItemMap" parameterType="String">
+        SELECT PLAN_NAME,PLAN_INSUR_PRICE,PLAN_INFO FROM t_plan_item
+        WHERE PLAN_ID = #{planId}
+    </select>
+
+
+</mapper>

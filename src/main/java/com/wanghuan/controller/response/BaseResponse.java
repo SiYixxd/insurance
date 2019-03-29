@@ -1,5 +1,6 @@
 package com.wanghuan.controller.response;
 
+import com.wanghuan.common.InsuranceException;
 import com.wanghuan.model.sys.Admin;
 import com.wanghuan.model.sys.UserInfo;
 import lombok.*;
@@ -23,5 +24,10 @@ public class BaseResponse implements Serializable {
     public BaseResponse(int code, String message){
         this.code = code;
         this.message = message;
+    }
+
+    public void setByExpcetion(InsuranceException expcetion){
+        this.setCode(expcetion.getCode());
+        this.setMessage(expcetion.getMessage());
     }
 }

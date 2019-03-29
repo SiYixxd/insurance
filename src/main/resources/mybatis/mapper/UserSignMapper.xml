@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.UserSignDao">
+    <resultMap id="userSignMap" type="com.wanghuan.model.sys.UserSign">
+        <result column="USER_ID" property="userId"/>
+        <result column="SIGN_STATUS" property="signStatus"/>
+        <result column="TOTAL_DAY" property="totalDay"/>
+        <result column="CURRENT_DAY" property="currentDay"/>
+    </resultMap>
+
+
+    <!-- 新建用户签到信息 -->
+    <insert id="insertSign" parameterType="com.wanghuan.model.sys.UserSign">
+        insert into t_user_sign (USER_ID,SIGN_STATUS,TOTAL_DAY,CURRENT_DAY)
+        VALUES (#{userId}, #{signStatus}, #{totalDay}, #{currentDay})
+    </insert>
+
+    <!--更新用户签到状态-->
+    <update id="updateSign" parameterType="com.wanghuan.model.sys.UserSign" >
+        update t_user_sign
+        <set>
+            <if test="signStatus != null and signStatus != ''">
+                SIGN_STATUS = #{signStatus},
+            </if>
+            <if test="totalDay != null and totalDay != ''">
+                TOTAL_DAY = #{totalDay},
+            </if>
+            <if test="currentDay != null and currentDay != ''">
+                CURRENT_DAY = #{currentDay},
+            </if>
+        </set>
+        WHERE USER_ID = #{userId}
+    </update>
+
+
+<!--通过用户id查询签到状态-->
+    <select id="findSignStatus" resultMap="userSignMap" parameterType="String">
+        select SIGN_STATUS,TOTAL_DAY,CURRENT_DAY
+        from t_user_sign
+        <where>
+            USER_ID=#{userId}
+        </where>
+    </select>
+
+<!--    &lt;!&ndash;查询出没有连续签到的用户id&ndash;&gt;
+    <select id="findNotContinuous" resultMap="String">
+        select USER_ID
+        from t_user_sign
+        <where>
+            CURRENT_DAY &gt;{1}
+            AND
+            SIGN_STATUS = 0
+        </where>
+    </select>-->
+
+
+<!--修改断签的用户信息-->
+    <update id="updateIrregularSign">
+        update t_user_sign SET SIGN_STATUS = 0 CURRENT_DAY = 1 TOTAL_DAY =1
+        WHERE
+          CURRENT_DAY &gt;{1}
+            AND
+            SIGN_STATUS = 0
+    </update>
+
+    <!--修改连续签到的用户信息-->
+    <update id="updateContinousSign">
+        update t_user_sign SET SIGN_STATUS = 0 CURRENT_DAY = CURRENT_DAY + 1 TOTAL_DAY = TOTAL_DAY+1
+        WHERE
+          CURRENT_DAY &gt;{1}
+            AND
+            SIGN_STATUS = 1
+    </update>
+
+    <!--每周更新一次所有用户签到信息，全部归零-->
+    <update id="updateAll">
+        update t_user_sign SET SIGN_STATUS = 0 CURRENT_DAY = 0 TOTAL_DAY = 0
+    </update>
+
+
+</mapper>

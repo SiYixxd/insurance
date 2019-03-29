@@ -196,6 +196,7 @@ public class UserCommentController {
      * @param request
      * @return
      */
+    @PostMapping(value = "/commentDetails")
     public CommentResponse commentDetails(@RequestBody CommentPageRequest request) {
         CommentResponse response = new CommentResponse();
         try {

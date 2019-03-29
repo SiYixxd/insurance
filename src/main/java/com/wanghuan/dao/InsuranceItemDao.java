@@ -24,7 +24,6 @@ public interface InsuranceItemDao {
     List<InsuranceItemVO> findInsuranceCategory(String id);
 
     //通过categoryId来查询产品详情
-    //todo mapperXML
     InsuranceDetailVO findInsuranceDetail(String insuranceId);
 
 

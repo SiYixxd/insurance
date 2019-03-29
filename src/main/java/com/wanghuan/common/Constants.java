@@ -14,7 +14,7 @@ public class Constants {
     public final static int NEWS_LIKE = 1;
     public final static int NEWS_DISS = 2;
 
-    //用户签到行文常量
+    //用户签到常量
     public final static int SIGN_TRUE = 1;
     public final static int SIGN_FALSE = 0;
 
@@ -29,9 +29,10 @@ public class Constants {
     //redis key 评论
     public final static String CACHE_COMMENT_ACT_LIKE = "cache::comment::act::like::";
     public final static String CACHE_COMMENT_ACT_DISS = "cache::comment::act::diss::";
-    //redis key 签到
-    public final static String CACHE_SIGN_ACT_TRUE = "cache::sign::act::true::";
-    public final static String CACHE_SIGN_ACT_FALSE = "cache::sign::act::false::";
 
+    //redis key 用户的签到状态
+    public final static String CACHE_SIGN_ACT_TRUE = "cache::sign::act::true";
 
+    //currentDay 用户当前该签第几天
+    public static final String CACHE_SIGN_DAY ="cache::sign::day";
 }

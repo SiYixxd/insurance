@@ -14,14 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserContactDaoTest  {
     @Autowired
     UserContactDao userContactDao;
-    UserContact u = new UserContact();
-    String name = u.getClass().getName();
+
 
     @Test
     public void testInsert(){
         UserContact userContact = new UserContact();
-
         userContactDao.insertContact(userContact);;
-        System.out.println(name);
     }
 }

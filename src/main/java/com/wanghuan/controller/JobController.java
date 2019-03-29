@@ -1,5 +1,6 @@
 package com.wanghuan.controller;
 
+import com.wanghuan.service.sys.UserSignService;
 import com.wanghuan.task.BaseJob;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,11 +22,14 @@ import java.util.Map;
 public class JobController
 {
 
-
-    //加入Qulifier注解，通过名称注入bean
+    //加入Qualifier注解，通过名称注入bean
     @Autowired
+    @Resource(name = "userSignServiceImpl")
+    private UserSignService userSignService;
+
     @Qualifier("Scheduler")
     private Scheduler scheduler;
+
 
     @PostMapping(value="/addjob")
     public void addjob(@RequestBody Map<String,String> paraMap) throws Exception

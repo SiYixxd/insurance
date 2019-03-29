@@ -5,8 +5,7 @@ import java.util.Properties;
 
 import org.quartz.Scheduler;
 import org.quartz.ee.servlet.QuartzInitializerListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,4 +46,7 @@ public class SchedulerConfig {
     public Scheduler scheduler() throws IOException {
         return schedulerFactoryBean().getScheduler();
     }
+
+
+
 }

@@ -9,12 +9,15 @@ import com.wanghuan.controller.request.SignRequest;
 import com.wanghuan.controller.response.BaseResponse;
 import com.wanghuan.model.sys.MessageInfo;
 import com.wanghuan.model.sys.UserInfo;
+import com.wanghuan.model.sys.UserSign;
 import com.wanghuan.service.sys.MessageInfoService;
 import com.wanghuan.service.sys.RegistService;
 import com.wanghuan.service.sys.UserInfoService;
+import com.wanghuan.service.sys.UserSignService;
 import com.wanghuan.utils.MD5Util;
 import com.wanghuan.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +35,10 @@ public class UserInfoController {
 
     @Resource(name = "messageInfoServiceImpl")
     private MessageInfoService messageInfoService;
+
+    @Resource(name = "userSignServiceImpl")
+    private UserSignService userSignService;
+
 
     @Autowired
     private RegistService registService;
@@ -105,6 +112,10 @@ public class UserInfoController {
         //2 验证码通过  进行注册或者登陆
         try {
             UserInfo userInfo = registService.signUp(request.getMobile(), "随机生成一个userName", request.getCode(), "-");
+           /* UserSign userSign = new UserSign();
+            userSign.setUserId(userInfo.getUserId());
+            userSignService.insertSign(userSign)*/
+            ;
             response.setInfo(userInfo);
             response.setCode(10000);
             response.setMessage("成功");
@@ -143,7 +154,7 @@ public class UserInfoController {
     //用户通过用户id 更新自己的昵称和头像   头像传固定url地址 通过手机号get到userInfo
     @PostMapping(value = "/setUserInfo")
     public BaseResponse setUserInfo(@RequestBody SetRequest request) {
-        String mobile =  request.getMobile();
+        String mobile = request.getMobile();
         String imageUrl = request.getImageUrl();
         String userName = request.getUserName();
         UserInfo userInfo = new UserInfo();
@@ -154,7 +165,7 @@ public class UserInfoController {
         //设置完成后更新userInfo
         userInfoService.updateUser(userInfo);
         //需要把设置完成的信息返回给用户
-        return new BaseResponse(10000, "成功", userInfo,null,null);
+        return new BaseResponse(10000, "成功", userInfo, null, null);
     }
   /* @PostMapping(value = "/setUserInfo2", consumes = "application/x-www-form-urlencoded;charset=utf-8")
     public BaseResponse setUserInfo2(@RequestParam Map<String,String> request) {
@@ -180,7 +191,7 @@ public class UserInfoController {
             String password = passwordRequest.getPassword();
             String mobile = passwordRequest.getMobile();
             String md5Password = MD5Util.encrypt(mobile + password);
-            userInfoService.updateUserPassword(md5Password,mobile);
+            userInfoService.updateUserPassword(md5Password, mobile);
             UserInfo userInfo = userInfoService.getUserInfoByUserMobile(mobile);
             userInfo.setPassword(md5Password);
             return new BaseResponse(10000, "密码设置成功");
@@ -203,38 +214,24 @@ public class UserInfoController {
     }
 
 
-
-   /* *//**
-     * APP 签到接口
+    /*    *
+     * APP 通过redis签到的接口
      * @param request
      * @return
-     *//*
+     */
     @PostMapping(value = "/userSign")
-    //todo 点赞可以点了在取消，签到签了之后不能取消怎么实现？
-    public BaseResponse userSign(@RequestBody SignRequest request) {
+    public BaseResponse userSign(@RequestBody SignRequest request) throws Exception {
         BaseResponse response = new BaseResponse();
-        try{
-            if(request.getAct() == Constants.SIGN_TRUE){
-                // 签到
-                //记录签到缓存 key是唯一的，
-                redisUtil.hset(Constants.CACHE_SIGN_ACT_TRUE , request.getUserId(), "1");
-                redisUtil.hset(request.getUserId(),这是该用户第几天签到,"1");//表示该用户已经签到
-                //签到的时候把未签到的状态删除
-                redisUtil.hdel(Constants.CACHE_SIGN_ACT_FALSE,request.getUserId());
-            }else {
-                //没签到
-                //未签到的时候把未签到的状态删除
-                redisUtil.hset(Constants.CACHE_SIGN_ACT_FALSE, request.getUserId(), "0");
-                redisUtil.hdel(Constants.CACHE_SIGN_ACT_TRUE , request.getUserId());
-            }
+        try {
+            userSignService.saveSignByRedis(request.getUserId());
             response.setCode(Constants.SUCCESS_CODE);
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
-        }catch (Exception e){
-            response.setCode(10001);
+        } catch (Exception e) {
+            response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
         }
-    }*/
+    }
 
 }

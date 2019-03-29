@@ -42,6 +42,10 @@ public class RedisUtil {
         redisTemplate.opsForHash().put(redisKey, key , value);
     }
 
+    public void hincry(String redisKey, String key, Long value){
+        redisTemplate.opsForHash().increment(redisKey, key , value);
+    }
+
     public void hdel(String redisKey, String key){
         if(StringUtils.isNotBlank(redisKey)){
             if(StringUtils.isNotBlank(key)){

@@ -16,12 +16,12 @@ public class MessageInfoDaoTest extends WhSpringBootApplicationTests {
     private MessageInfo messageInfo;
 
     @Before
-    public void init(){
+    public void init() {
         log.info("before 方法执行了");
     }
 
     @Test
-    public void testSave(){
+    public void testSave() {
         MessageInfo info = new MessageInfo();
 
 
@@ -31,7 +31,7 @@ public class MessageInfoDaoTest extends WhSpringBootApplicationTests {
     }
 
     @Test
-    public void testSave2(){
+    public void testSave2() {
         MessageInfo info = new MessageInfo();
 
 

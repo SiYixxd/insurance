@@ -30,15 +30,16 @@ public class InsuranceItemController {
 
     /**
      * 新建保险信息
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/insertInsurance")
-    public BaseResponse insertInsurance(@RequestBody InsuranceRequest request){
+    public BaseResponse insertInsurance(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceItem insurance = new InsuranceItem();
-            BeanUtils.copyProperties(request,insurance);
+            BeanUtils.copyProperties(request, insurance);
             insurance.setInsuranceId(IdGeneratorUtil.generatId());
             insurance.setCreateTime(new Date());
             insurance.setDeleteStatus(0);
@@ -47,7 +48,7 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("新建失败！","参数信息:" + request.toString(),e);
+            log.error("新建失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -57,11 +58,12 @@ public class InsuranceItemController {
 
     /**
      * 移除一个保险
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/removeInsurance")
-    public BaseResponse removeInsurance(@RequestBody InsuranceRequest request){
+    public BaseResponse removeInsurance(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             insuranceItemService.removeInsurance(request.getInsuranceId());
@@ -69,7 +71,7 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("删除失败！","参数信息:" + request.toString(),e);
+            log.error("删除失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -78,26 +80,24 @@ public class InsuranceItemController {
     }
 
 
-
-
-
     /**
      * 更新保险信息
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/updateInsurance")
-    public BaseResponse updateInsurance(@RequestBody InsuranceRequest request ){
+    public BaseResponse updateInsurance(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceItem insurance = new InsuranceItem();
-            BeanUtils.copyProperties(request,insurance);
+            BeanUtils.copyProperties(request, insurance);
             insuranceItemService.updateInsurance(insurance);
             response.setCode(Constants.SUCCESS_CODE);
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("更新失败！","参数信息:" + request.toString(),e);
+            log.error("更新失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -105,14 +105,14 @@ public class InsuranceItemController {
     }
 
 
-
     /**
      * 根据id查询保险信息。
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/findInsuranceById")
-    public BaseResponse findInsuranceById(@RequestBody InsuranceRequest request){
+    public BaseResponse findInsuranceById(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceItemVO insurance = insuranceItemService.findInsuranceById(request.getInsuranceId());
@@ -121,7 +121,7 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("查找失败！","参数信息:" + request.toString(),e);
+            log.error("查找失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -136,7 +136,7 @@ public class InsuranceItemController {
      *
      */
     @PostMapping(value = "/findInsuranceCategory")
-    public BaseResponse findInsuranceCategory(@RequestBody InsuranceRequest request){
+    public BaseResponse findInsuranceCategory(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             List insurance = insuranceItemService.findInsuranceCategory(request.getCategoryId());
@@ -145,20 +145,22 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("查找失败！","参数信息:" + request.toString(),e);
+            log.error("查找失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
         }
     }
 
+
     /**
-     * 分类查询出数以
+     * 分类查询出保险
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/findInsuranceDetail")
-    public BaseResponse findInsuranceDetail(@RequestBody InsuranceRequest request){
+    public BaseResponse findInsuranceDetail(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             //需要返回的是一个list，list中存放着各种保险信息，包括该保险属于的保险计划。而保险计划也是一个list，存放在该保险计划的各种信息，保险计划中有一个planItemList
@@ -169,7 +171,7 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("查找失败！","参数信息:" + request.toString(),e);
+            log.error("查找失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -177,12 +179,13 @@ public class InsuranceItemController {
     }
 
     /**
-     * 分类查询出数以
+     * 分类查询出保险
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "/findInsuranceDetail2")
-    public BaseResponse findInsuranceDetail2(@RequestBody InsuranceRequest request){
+    public BaseResponse findInsuranceDetail2(@RequestBody InsuranceRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceDetailVO detail = insuranceItemService.findInsuranceDetail2(request.getInsuranceId());
@@ -191,13 +194,12 @@ public class InsuranceItemController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("查找失败！","参数信息:" + request.toString(),e);
+            log.error("查找失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
         }
     }
-
 
 
 }

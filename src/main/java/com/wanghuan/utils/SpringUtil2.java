@@ -18,6 +18,7 @@ public class SpringUtil2 implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }

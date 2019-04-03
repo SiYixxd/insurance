@@ -34,6 +34,8 @@
     </resultMap>
 
     <!--详情map-->
+
+
     <resultMap id="insuranceItemDetailMap" type="com.wanghuan.model.sys.vo.InsuranceDetailVO">
         <result column="INSURANCE_NAME" property="insuranceName"/>
         <result column="INSURANCE_RANGE" property="insuranceRange"/>
@@ -70,10 +72,13 @@
 
     <!-- 新建保险 -->
     <insert id="insertInsurance" parameterType="com.wanghuan.model.sys.InsuranceItem">
-        insert into t_insurance_item (PK_SID, CREATE_TIME, DELETE_STATUS, COMPANY_ID, INSURANCE_NAME, INSURANCE_ID,INSURANCE_RANGE,INSURANCE_MIN,INSURANCE_MAX,
+        insert into t_insurance_item (PK_SID, CREATE_TIME, DELETE_STATUS, COMPANY_ID, INSURANCE_NAME,
+        INSURANCE_ID,INSURANCE_RANGE,INSURANCE_MIN,INSURANCE_MAX,
         INSURANCE_LIMIT,INSURANCE_DETAIL,INSURANCE_RULES,INSURANCE_SUMMARY,INSURANCE_BANNER)
-        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{companyId}, #{insuranceName}, #{insuranceId}, #{insuranceRange}, #{insuranceMin},
-        #{insuranceMax}, #{insuranceLimit}, #{insuranceDetail}, #{insuranceRules}, #{insuranceSummary}, #{insuranceBanner})
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{companyId}, #{insuranceName}, #{insuranceId},
+        #{insuranceRange}, #{insuranceMin},
+        #{insuranceMax}, #{insuranceLimit}, #{insuranceDetail}, #{insuranceRules}, #{insuranceSummary},
+        #{insuranceBanner})
     </insert>
 
     <!--移除一个保险-->
@@ -120,8 +125,8 @@
         where INSURANCE_ID=#{insuranceId}
     </update>
 
-<!--
-    通过保险id查询保险信息-->
+    <!--
+        通过保险id查询保险信息-->
     <select id="findInsuranceById" resultMap="insuranceItemVOMap" parameterType="String">
         select tii.INSURANCE_NAME,tii.INSURANCE_RANGE,tii.INSURANCE_MIN,tii.INSURANCE_MAX,
         tii.INSURANCE_LIMIT,tii.INSURANCE_DETAIL,tii.INSURANCE_RULES,tii.INSURANCE_SUMMARY,tii.INSURANCE_BANNER,
@@ -134,6 +139,7 @@
         </where>
     </select>
 
+
     <!--通过categoryId查询出保险item详情-->
 
     <select id="findInsuranceCategory" resultMap="insuranceItemVOMap" parameterType="String">
@@ -144,6 +150,7 @@
     </select>
 
 
+
     <select id="findInsuranceDetail" resultMap="insuranceItemDetailMap" parameterType="String">
         SELECT tii.*, tip.*, tpppp.* FROM t_insurance_item tii
         LEFT JOIN t_insurance_plan tip on tii.INSURANCE_ID = tip.INSURANCE_ID
@@ -152,26 +159,5 @@
     </select>
 
 
-
-
-
-    <!--
-        <select id="findInsuranceCategory2" resultMap="InsuranceVOMap" parameterType="String">
-            SELECT * FROM t_insurance_item tiic
-            WHERE INSURANCE_ID IN (
-                  SELECT INSURANCE_ID FROM t_insurance_item_category WHERE CATEGORY_ID = #{categoryId}
-                )
-        </select>
-
-
-
-        <select id="findInsuranceByCategoryId" parameterType="list"  resultMap="InsuranceVOMap" >
-            SELECT * from t_insurance_item where
-            <foreach collection="list" item="insuranceId" open="INSURANCE_ID IN ( " close=" ) " separator=",">
-                #{insuranceId}
-            </foreach>
-        </select>
-
-    -->
 
 </mapper>

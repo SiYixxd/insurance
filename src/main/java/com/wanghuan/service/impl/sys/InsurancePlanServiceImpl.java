@@ -37,7 +37,7 @@ public class InsurancePlanServiceImpl implements InsurancePlanService {
 
     @Override
     public InsurancePlan findPlanById(String id) {
-        return   insurancePlanDao.findPlanById(id);
+        return insurancePlanDao.findPlanById(id);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class InsurancePlanServiceImpl implements InsurancePlanService {
         //通过保险Id查询出存放保险计划的list
         List<PlanVO> list = insurancePlanDao.findPlanVOByInsuranceId(insuranceId);
         //遍历这个list，其中有planId。
-        list.forEach(vo->{
+        list.forEach(vo -> {
             //planItem  get到planId后通过这个id查询出 与它对应的planItem，然后返回一个存放planItem的list
             List<PlanItem> planItemList = planItemDao.findByPlanId(vo.getPlanId());
             //把得到的planItemList set到planVOlist中

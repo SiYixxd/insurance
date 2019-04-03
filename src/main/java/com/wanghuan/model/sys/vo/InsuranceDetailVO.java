@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @ToString
 public class InsuranceDetailVO {
-
     private String companyId;
     private String companyName;
     private String insuranceName;
@@ -22,7 +21,6 @@ public class InsuranceDetailVO {
     private String insuranceRules;//保险须知
     private String insuranceSummary;//保险简介
     private String insuranceBanner;//保险条幅，最上面的那个图片 xxx.jpg
-
     private List<PlanVO> planList;
 
 }

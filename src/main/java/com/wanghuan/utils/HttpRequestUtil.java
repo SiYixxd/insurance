@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class HttpRequestUtil {
     /**
      * HttpClient 模拟POST请求
+     *
      * @param url
      * @param params
      * @return
@@ -78,12 +80,13 @@ public class HttpRequestUtil {
 
 
     /**
-     *  HttpClient 模拟GET请求
+     * HttpClient 模拟GET请求
      * 方法说明
-     * @Discription:扩展说明
+     *
      * @param url
      * @param params
      * @return String
+     * @Discription:扩展说明
      */
     public static String getRequest(String url, Map<String, String> params) {
         //构造HttpClient实例

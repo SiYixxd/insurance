@@ -24,85 +24,83 @@ import com.wanghuan.service.sys.UserService;
 /*@PreAuthorize("hasRole('ADMI')")*/
 public class UserController {
 
-	private Logger log = LoggerFactory.getLogger(UserController.class);
+    private Logger log = LoggerFactory.getLogger(UserController.class);
 
-	public Map<String, UserEntity> cacheMap = new HashMap<>();
+    public Map<String, UserEntity> cacheMap = new HashMap<>();
 
-	@Resource(name = "userServiceImpl")
-	private UserService userService;
+    @Resource(name = "userServiceImpl")
+    private UserService userService;
 
-	@GetMapping("/user123/{loginName}")
-	public UserEntity userGet(@PathVariable String loginName) {
+    @GetMapping("/user123/{loginName}")
+    public UserEntity userGet(@PathVariable String loginName) {
 
 
-		UserEntity userEntity
-				= userService.getUserEntityByLoginName(loginName);
-		// 复杂对象
-		log.debug("The method is ending");
+        UserEntity userEntity
+                = userService.getUserEntityByLoginName(loginName);
+        // 复杂对象
+        log.debug("The method is ending");
 
-		return userEntity;
-	}
+        return userEntity;
+    }
 
-	/**
-	 * 获取user表数据
-	 * 
-	 * @param loginName
-	 * @param pageSize
-	 * @param page
-	 * @return
-	 */
-	@GetMapping("/users")
-	public PageResult usersList(String loginName, int pageSize, int page) {
+    /**
+     * 获取user表数据
+     *
+     * @param loginName
+     * @param pageSize
+     * @param page
+     * @return
+     */
+    @GetMapping("/users")
+    public PageResult usersList(String loginName, int pageSize, int page) {
 
-		PageResult pageResult = new PageResult();
-		pageResult.setData(userService.usersList(loginName, pageSize, page * pageSize));
-		pageResult.setTotalCount(userService.usersSize(loginName, pageSize, page * pageSize));
-		log.debug("The method is ending");
-		return pageResult;
-	}
+        PageResult pageResult = new PageResult();
+        pageResult.setData(userService.usersList(loginName, pageSize, page * pageSize));
+        pageResult.setTotalCount(userService.usersSize(loginName, pageSize, page * pageSize));
+        log.debug("The method is ending");
+        return pageResult;
+    }
 
-	/**
-	 * 新建用户信息
-	 * 
-	 * @param userEntity
-	 * @return
-	 */
-	@PostMapping("/users/user")
-	public UserEntity insertUser(@RequestBody UserEntity userEntity) {
+    /**
+     * 新建用户信息
+     *
+     * @param userEntity
+     * @return
+     */
+    @PostMapping("/users/user")
+    public UserEntity insertUser(@RequestBody UserEntity userEntity) {
 //		userService.insertUser(userEntity);
-		log.debug("The method is ending");
-		return userEntity;
-	}
+        log.debug("The method is ending");
+        return userEntity;
+    }
 
-	/**
-	 * 更新用户信息
-	 * 
-	 * @param userEntity
-	 * @param id
-	 * @return
-	 */
-	@PutMapping("/users/{id}")
-	public UserEntity updateUser(@RequestBody UserEntity userEntity, @PathVariable int id) {
-		if (userEntity.getId() == id) {
+    /**
+     * 更新用户信息
+     *
+     * @param userEntity
+     * @param id
+     * @return
+     */
+    @PutMapping("/users/{id}")
+    public UserEntity updateUser(@RequestBody UserEntity userEntity, @PathVariable int id) {
+        if (userEntity.getId() == id) {
 //			userService.updateUser(userEntity);
-		}
-		log.debug("The method is ending");
-		return userEntity;
-	}
+        }
+        log.debug("The method is ending");
+        return userEntity;
+    }
 
-	/**
-	 * 删除用户信息
-	 * 
-	 * @param groupId
-	 * @return
-	 */
-	@DeleteMapping("/users")
-	public List<String> deleteUsers(@RequestBody List<String> groupId) {
-		userService.deleteUsers(groupId);
-		return groupId;
-	}
-
-
+    /**
+     * 删除用户信息
+     *
+     * @param groupId
+     * @return
+     */
+    @DeleteMapping("/users")
+    public List<String> deleteUsers(@RequestBody List<String> groupId) {
+        userService.deleteUsers(groupId);
+        return groupId;
+    }
 
 
 }

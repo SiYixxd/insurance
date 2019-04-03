@@ -15,7 +15,8 @@ public class CommentResponse implements Serializable {
     private int code;
     private String message;
     private int page;
-    public CommentResponse(int code, String message){
+
+    public CommentResponse(int code, String message) {
         this.code = code;
         this.message = message;
     }

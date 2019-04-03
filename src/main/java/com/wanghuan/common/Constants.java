@@ -1,14 +1,14 @@
 package com.wanghuan.common;
 
 public class Constants {
-//    响应常量
+    //    响应常量
     public final static int SUCCESS_CODE = 10000;
     public final static String SUCCESS_MESSAGE = "成功";
     public final static int ERROR_CODE = 10001;
     public final static String ERROR_MESSAGE = "失败";
 
     //用户查看文章的一页大小
-    public final static int PAGE_SIZE=5;
+    public final static int PAGE_SIZE = 5;
 
     //    文章行为常量
     public final static int NEWS_LIKE = 1;
@@ -34,5 +34,5 @@ public class Constants {
     public final static String CACHE_SIGN_ACT_TRUE = "cache::sign::act::true";
 
     //currentDay 用户当前该签第几天
-    public static final String CACHE_SIGN_DAY ="cache::sign::day";
+    public static final String CACHE_SIGN_DAY = "cache::sign::day";
 }

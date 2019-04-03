@@ -12,10 +12,13 @@ import java.util.List;
 public interface InsuranceItemDao {
     //增加一个保险
     void insertInsurance(InsuranceItem insuranceItem);
+
     //移除一个保险
     void removeInsurance(String id);
+
     //更新保险信息
-    void updateInsurance(InsuranceItem  insuranceItem);
+    void updateInsurance(InsuranceItem insuranceItem);
+
     //查询保险
     InsuranceItemVO findInsuranceById(String id);
 

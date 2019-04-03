@@ -12,38 +12,38 @@ import com.wanghuan.service.sys.UserService;
 @Service(value = "userServiceImpl")
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao userDao;
-	
-	@Override
-	public void insert(UserEntity userEntity) {
-		userDao.insert(userEntity);
-	}
+    @Autowired
+    private UserDao userDao;
 
-	@Override
-	public void del(UserEntity userEntity) {
-		userDao.del(userEntity);
-	}
+    @Override
+    public void insert(UserEntity userEntity) {
+        userDao.insert(userEntity);
+    }
 
-	@Override
-	public UserEntity getUserEntityByLoginName(String loginName) {
-		return userDao.getUserEntityByLoginName(loginName);
-	}
+    @Override
+    public void del(UserEntity userEntity) {
+        userDao.del(userEntity);
+    }
 
-	@Override
-	public List<UserEntity> usersList(String loginName, int pageSize, int start) {
-		return userDao.usersList( loginName,  pageSize,  start);
-	}
+    @Override
+    public UserEntity getUserEntityByLoginName(String loginName) {
+        return userDao.getUserEntityByLoginName(loginName);
+    }
 
-	@Override
-	public Integer usersSize(String loginName, int pageSize, int start) {
-		return userDao.usersSize(loginName, pageSize, start);
-	}
+    @Override
+    public List<UserEntity> usersList(String loginName, int pageSize, int start) {
+        return userDao.usersList(loginName, pageSize, start);
+    }
+
+    @Override
+    public Integer usersSize(String loginName, int pageSize, int start) {
+        return userDao.usersSize(loginName, pageSize, start);
+    }
 
 
-	@Override
-	public void deleteUsers(List<String> groupId) {
-		userDao.deleteUsers(groupId);
-	}
+    @Override
+    public void deleteUsers(List<String> groupId) {
+        userDao.deleteUsers(groupId);
+    }
 
 }

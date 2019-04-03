@@ -15,6 +15,6 @@ public interface MessageInfoDao {
      * 通过用户请求的手机号查询出数据库中对应的code order by createTime DESC limit 1
      *  返回的是一个MessageInfoMap对象
      * */
-    public MessageInfo getMsgByMobile (@Param("mobile") String mobile);
+    public MessageInfo getMsgByMobile(@Param("mobile") String mobile);
 
 }

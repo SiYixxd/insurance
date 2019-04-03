@@ -16,42 +16,46 @@ public interface NewsDao {
     /*增加一篇新资讯
     @param news
     * */
-     void insertNews(News news);
+    void insertNews(News news);
 
     /*根据ID删除一篇咨询
      * @param news
      * */
     void removeNews(String newsId);
 
-    /*批量移除咨询 用到了mybatis遍历  这里的删除一般都是软删除 即更新一个status字段，查询的时候where 判断领一个状态
+    /*批量移除咨询 用到了mybatis遍历  这里的删除一般都是软删除 即更新一个status字段，查询的时候where 判断另一个状态
      * @param news
      * */
     void removeMutipleNews(List<String> ids);
 
     /*更新一篇咨询
-    * @param news
-    * */
-     void updateNews(News news);
+     * @param news
+     * */
+    void updateNews(News news);
 
     /*后台人员分页查看咨询
      * */
     List<News> adminFindPager(Map<String, Object> map, RowBounds rowBounds);
 
+
+    /*用户查看咨询
+     * @param newsTitle
+     * 用户查看咨询的部分内容，不需要全部咨询全部信息，
+     * */
+    List<News> userFindPager(Map<String, Object> map, RowBounds rowBounds);
+
+
     /*根据id查询咨询
      * @param id
      * */
-     News findNewsById(@Param("newsId") String id);
+    News findNewsById(@Param("newsId") String id);
 
     /*根据AdminUser查询咨询
      * @param adminUser
      * */
-    public News findNewsByAdminUser(@Param("adminUser")String adminUser);
+    public News findNewsByAdminUser(@Param("adminUser") String adminUser);
 
-    /*用户查看咨询
-    * @param newsTitle
-    * 用户查看咨询的部分内容，不需要全部咨询全部信息，
-    * */
-    List<News> userFindPager(Map<String, Object> map, RowBounds rowBounds);
+
 
     /*根据标题查询咨询
      * @param id

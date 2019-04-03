@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class AdminPageRequest  implements Serializable {
+public class AdminPageRequest implements Serializable {
     private String newsTitle;
     private String newsContent;
     private String newsId;

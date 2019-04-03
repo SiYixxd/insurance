@@ -2,86 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wanghuan.dao.CommentDao">
 
-	<resultMap id="commentMap" type="com.wanghuan.model.sys.Comment">
-		<id column="PK_SID" property="pkSid" />
-		<result column="COMMENT_ID" property="commentId" />
-		<result column="USER_ID" property="userId" />
-		<result column="COMMENT_CONTENT" property="commentContent" />
-		<result column="CREATE_TIME" property="createTime" />
-		<result column="COMMENT_STATUS" property="commentStatus" />
-		<result column="PARENT_ID" property="parentId" />
-		<result column="NEWS_ID" property="newsId" />
-	</resultMap>
+    <resultMap id="commentMap" type="com.wanghuan.model.sys.Comment">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="COMMENT_ID" property="commentId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="COMMENT_CONTENT" property="commentContent"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="COMMENT_STATUS" property="commentStatus"/>
+        <result column="PARENT_ID" property="parentId"/>
+        <result column="NEWS_ID" property="newsId"/>
+    </resultMap>
 
-	<!--
-		 userName 条件查询 或者 展示userName
-		a连表查
-		b先查出列表，再往里面放数据
-		因为voMap中涉及到的是连表查，不同表，但是在一个DB中，在hibernate中字段需要对应，mybatis中不一一对应也可以，
-		但是需要开发规范，对应。
-		如果comment表中有了userName字段，则不需要vo。看需求变化，不直接操作数据库增加字段，会造成数据冗余。
+    <!--
+         userName 条件查询 或者 展示userName
+        a连表查
+        b先查出列表，再往里面放数据
+        因为voMap中涉及到的是连表查，不同表，但是在一个DB中，在hibernate中字段需要对应，mybatis中不一一对应也可以，
+        但是需要开发规范，对应。
+        如果comment表中有了userName字段，则不需要vo。看需求变化，不直接操作数据库增加字段，会造成数据冗余。
 -->
-	<resultMap id="commentVOMap" type="com.wanghuan.model.sys.vo.CommentVO">
-		<id column="PK_SID" property="pkSid" />
-		<result column="COMMENT_ID" property="commentId" />
-		<result column="USER_ID" property="userId" />
-		<result column="COMMENT_CONTENT" property="commentContent" />
-		<result column="CREATE_TIME" property="createTime" />
-		<result column="COMMENT_STATUS" property="commentStatus" />
-		<result column="PARENT_ID" property="parentId" />
-		<result column="USER_NAME" property="userName" />
-	</resultMap>
+    <resultMap id="commentVOMap" type="com.wanghuan.model.sys.vo.CommentVO">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="COMMENT_ID" property="commentId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="COMMENT_CONTENT" property="commentContent"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="COMMENT_STATUS" property="commentStatus"/>
+        <result column="PARENT_ID" property="parentId"/>
+        <result column="USER_NAME" property="userName"/>
+    </resultMap>
 
-	<!-- 新建评论 -->
-	<insert id="insertComment" parameterType="com.wanghuan.model.sys.Comment">
-		insert into t_comment (PK_SID,COMMENT_ID,USER_ID,COMMENT_CONTENT,CREATE_TIME,COMMENT_STATUS,PARENT_ID,NEWS_ID)
-		VALUES (#{pkSid},#{commentId},#{userId},#{commentContent},#{createTime},#{commentStatus},#{parentId},#{newsId})
-	</insert>
+    <!-- 新建评论 -->
+    <insert id="insertComment" parameterType="com.wanghuan.model.sys.Comment">
+        insert into t_comment (PK_SID,COMMENT_ID,USER_ID,COMMENT_CONTENT,CREATE_TIME,COMMENT_STATUS,PARENT_ID,NEWS_ID)
+        VALUES (#{pkSid},#{commentId},#{userId},#{commentContent},#{createTime},#{commentStatus},#{parentId},#{newsId})
+    </insert>
 
-	<!-- 移除评论 -->
-	<update id="removeComment" parameterType="String" >
-		update t_comment
-		<set>
-			COMMENT_STATUS = 1
-		</set>
-		WHERE COMMENT_ID = #{commentId}
-	</update>
+    <!-- 移除评论 -->
+    <update id="removeComment" parameterType="String">
+        update t_comment
+        <set>
+            COMMENT_STATUS = 1
+        </set>
+        WHERE COMMENT_ID = #{commentId}
+    </update>
 
 
-	<!-- 更新咨询信息 根据ID改，row中有id，所以添加条件为where id = xxx -->
-	<update id="updateComment" parameterType="com.wanghuan.model.sys.Comment" >
-		update t_comment
-		<set>
-			<if test="COMMENT_CONTENT != null and commentContent != ''">
-				COMMENT_CONTENT = #{commentContent},
-			</if>
-		</set>
-		WHERE COMMENT_ID = #{commentId}
-	</update>
+    <!-- 更新咨询信息 根据ID改，row中有id，所以添加条件为where id = xxx -->
+    <update id="updateComment" parameterType="com.wanghuan.model.sys.Comment">
+        update t_comment
+        <set>
+            <if test="COMMENT_CONTENT != null and commentContent != ''">
+                COMMENT_CONTENT = #{commentContent},
+            </if>
+        </set>
+        WHERE COMMENT_ID = #{commentId}
+    </update>
 
-	<!--
-	 	分页查看评论，返回一个评论list 给后台页面 还是app
-	-->
-	<select id="showComment" parameterType="map" resultMap="commentMap">
-		SELECT COMMENT_CONTENT,CREATE_TIME FROM t_comment
-		<where>
-			<if test="startTime != null and startTime!= ''">
-				AND CREATE_TIME &gt; #{startTime}
-			</if>
-			<if test="endTime != null and endTime!= ''">
-				AND CREATE_TIME &lt; #{endTime}
-			</if>
-			AND COMMNNT_STATUS = 0
-		</where>
-		ORDER BY CREATE_TIME DESC
-	</select>
+    <!--
+         分页查看评论，返回一个评论list 给后台页面 还是app
+    -->
+    <select id="showComment" parameterType="map" resultMap="commentMap">
+        SELECT COMMENT_CONTENT,CREATE_TIME FROM t_comment
+        <where>
+            <if test="startTime != null and startTime!= ''">
+                AND CREATE_TIME &gt; #{startTime}
+            </if>
+            <if test="endTime != null and endTime!= ''">
+                AND CREATE_TIME &lt; #{endTime}
+            </if>
+            AND COMMNNT_STATUS = 0
+        </where>
+        ORDER BY CREATE_TIME DESC
+    </select>
 
-	<!--left join 的分页-->
-	<select id="findCommentLeftJoin" parameterType="map" resultMap="commentVOMap">
-		SELECT tc.*, tui.USER_NAME FROM t_comment tc
-		LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
-		<where>
-			<!--<if test="startTime != null and startTime!= ''">
+    <!--left join 的分页-->
+    <select id="findCommentLeftJoin" parameterType="map" resultMap="commentVOMap">
+        SELECT tc.*, tui.USER_NAME FROM t_comment tc
+        LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
+        <where>
+            <!--<if test="startTime != null and startTime!= ''">
 
                     AND tc.CREATE_TIME &gt; #{createTime}
                 </if>
@@ -89,39 +89,39 @@
                     AND tc.CREATE_TIME &lt; #{createTime}
                 </if>
                 AND-->
-			tc.COMMENT_STATUS = 0
-		</where>
-		ORDER BY tc.CREATE_TIME DESC
-	</select>
+            tc.COMMENT_STATUS = 0
+        </where>
+        ORDER BY tc.CREATE_TIME DESC
+    </select>
 
-	<!--
+    <!--
      查看子评论，返回一个评论list ，where parentId= commentId
 -->
-	<select id="findChildComment" parameterType="String" resultMap="commentMap">
-		SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
-		LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
-		<where>
-			<if test="parentId != null and parentId!= ''">
-				AND PARENT_ID = #{commentId}
-			</if>
-			AND COMMENT_STATUS = 0
-		</where>
-		ORDER BY CREATE_TIME DESC
-	</select>
+    <select id="findChildComment" parameterType="String" resultMap="commentMap">
+        SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
+        LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
+        <where>
+            <if test="parentId != null and parentId!= ''">
+                AND PARENT_ID = #{commentId}
+            </if>
+            AND COMMENT_STATUS = 0
+        </where>
+        ORDER BY CREATE_TIME DESC
+    </select>
 
 
-	<!--根据newId分页查看评论-->
+    <!--根据newId分页查看评论-->
 
-	<select id="findCommentListByNewsId" parameterType="String" resultMap="commentMap">
-		SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
-		LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
-		<where>
-			<if test="newsId != null and newsId!= ''">
-				AND NEWS_ID = #{newsId}
-			</if>
-			AND COMMNNT_STATUS = 0
-		</where>
-		ORDER BY CREATE_TIME DESC
-	</select>
+    <select id="findCommentListByNewsId" parameterType="String" resultMap="commentMap">
+        SELECT tc.COMMENT_CONTENT,tc.CREATE_TIME,tui.USER_NAME FROM t_comment tc
+        LEFT JOIN t_user_info tui ON tc.USER_ID = tui.USER_ID
+        <where>
+            <if test="newsId != null and newsId!= ''">
+                AND NEWS_ID = #{newsId}
+            </if>
+            AND COMMNNT_STATUS = 0
+        </where>
+        ORDER BY CREATE_TIME DESC
+    </select>
 
 </mapper>

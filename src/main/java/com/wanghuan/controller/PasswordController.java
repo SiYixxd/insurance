@@ -43,15 +43,15 @@ public class PasswordController {
 
         // 更新密码了
         //登陆以后开始修改密码
-        if (dbPassword == newPassword){
+        if (dbPassword == newPassword) {
             response.setCode(10001);
             response.setMessage("不能使用旧密码");
             return response;
         }
         //判断全部通过了将密码保存
-        String md5Password=  MD5Util.encrypt(newPassword);
+        String md5Password = MD5Util.encrypt(newPassword);
         userInfo.setPassword(md5Password);
-        userInfoService.updateUserPassword(md5Password,mobile);
+        userInfoService.updateUserPassword(md5Password, mobile);
         response.setCode(1000);
         response.setMessage("成功");
         return response;

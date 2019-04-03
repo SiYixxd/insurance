@@ -19,14 +19,15 @@ public class BaseResponse implements Serializable {
     private UserInfo info;
     private Admin user;
     private Object data;
+    private Boolean endFlag;
 
 
-    public BaseResponse(int code, String message){
+    public BaseResponse(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public void setByExpcetion(InsuranceException expcetion){
+    public void setByExpcetion(InsuranceException expcetion) {
         this.setCode(expcetion.getCode());
         this.setMessage(expcetion.getMessage());
     }

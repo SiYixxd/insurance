@@ -28,23 +28,23 @@
     <update id="updateCompany" parameterType="com.wanghuan.model.sys.InsuranceCompany">
         update t_insurance_company
         <set>
-            <if test="companyName != null and companyName!='' " >
+            <if test="companyName != null and companyName!='' ">
                 COMPANY_NAME=#{companyName},
             </if>
             <if test="companyLogo !=null and companyLogo!=''  ">
                 COMPANY_LOGO=#{companyLogo}
             </if>
         </set>
-        where  COMPANY_ID=#{companyId}
+        where COMPANY_ID=#{companyId}
     </update>
 
 
-<!--通过公司id查询公司信息-->
+    <!--通过公司id查询公司信息-->
     <select id="findCompanyById" resultMap="insuranceCompanyMap" parameterType="String">
         select COMPANY_NAME,COMPANY_LOGO from t_insurance_company
         <where>
             COMPANY_ID = #{companyId}
-            AND   DELETE_STATUS =0
+            AND DELETE_STATUS =0
         </where>
     </select>
 

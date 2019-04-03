@@ -1,94 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wanghuan.dao.NewsDao">
-	<resultMap id="newsMap" type="com.wanghuan.model.sys.News">
-		<id column="PK_SID" property="pkSid" />
-		<result column="NEWS_ID" property="newsId" />
-		<result column="ADMIN_USER" property="adminUser" />
-		<result column="NEWS_TITLE" property="newsTitle" />
-		<result column="NEWS_CONTENT" property="newsContent" />
-		<result column="NEWS_IMAGE" property="newsImage" />
-		<result column="NEWS_SOURCE" property="newsSource" />
-		<result column="CREATE_TIME" property="createTime" />
-		<result column="NEWS_STATUS" property="newsStatus" />
-	</resultMap>
+    <resultMap id="newsMap" type="com.wanghuan.model.sys.News">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="NEWS_ID" property="newsId"/>
+        <result column="ADMIN_USER" property="adminUser"/>
+        <result column="NEWS_TITLE" property="newsTitle"/>
+        <result column="NEWS_CONTENT" property="newsContent"/>
+        <result column="NEWS_IMAGE" property="newsImage"/>
+        <result column="NEWS_SOURCE" property="newsSource"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="NEWS_STATUS" property="newsStatus"/>
+    </resultMap>
 
-	<!-- 新建咨询信息 -->
-	<insert id="insertNews" parameterType="com.wanghuan.model.sys.News">
-		insert into t_news (PK_SID, NEWS_ID, ADMIN_USER, NEWS_TITLE,NEWS_CONTENT, NEWS_IMAGE, NEWS_SOURCE,CREATE_TIME,NEWS_STATUS)
-		VALUES (#{pkSid},#{newsId},#{adminUser},#{newsTitle},#{newsContent},#{newsImage},#{newsSource},#{createTime},#{newsStatus})
-	</insert>
+    <!-- 新建咨询信息 -->
+    <insert id="insertNews" parameterType="com.wanghuan.model.sys.News">
+        insert into t_news (PK_SID, NEWS_ID, ADMIN_USER, NEWS_TITLE,NEWS_CONTENT, NEWS_IMAGE,
+        NEWS_SOURCE,CREATE_TIME,NEWS_STATUS)
+        VALUES
+        (#{pkSid},#{newsId},#{adminUser},#{newsTitle},#{newsContent},#{newsImage},#{newsSource},#{createTime},#{newsStatus})
+    </insert>
 
-	<!-- 移除单条咨询 -->
-	<update id="removeNews" parameterType="String" >
-		update t_news
-		<set>
-			NEWS_STATUS = 1
-		</set>
-		WHERE NEWS_ID = #{newsId}
-	</update>
+    <!-- 移除单条咨询 -->
+    <update id="removeNews" parameterType="String">
+        update t_news
+        <set>
+            NEWS_STATUS = 1
+        </set>
+        WHERE NEWS_ID = #{newsId}
+    </update>
 
-	<!-- 批量移除咨询 -->
-	<update id="removeMutipleNews" parameterType="string" >
-		update t_news SET NEWS_STATUS = 1
-		WHERE
-		NEWS_ID IN
-		<!--遍历newsId 实际sql是  NEWS_ID IN (xx,xxx,xxx)-->
-		<foreach collection="list" close=")" item="newsId" open="(" separator=",">
-			#{newsId}
-		</foreach>
-	</update>
+    <!-- 批量移除咨询 -->
+    <update id="removeMutipleNews" parameterType="string">
+        update t_news SET NEWS_STATUS = 1
+        WHERE
+        NEWS_ID IN
+        <!--遍历newsId 实际sql是  NEWS_ID IN (xx,xxx,xxx)-->
+        <foreach collection="list" close=")" item="newsId" open="(" separator=",">
+            #{newsId}
+        </foreach>
+    </update>
 
 
-	<!-- 更新咨询信息 根据ID改，row中有id，所以添加条件为where id = xxx -->
-	<update id="updateNews" parameterType="com.wanghuan.model.sys.News" >
-		update t_news
-		<set>
-			<if test="newsTitle != null and newsTitle != ''">
-				NEWS_TITLE = #{newsTitle},
-			</if>
-			<if test="newsImage != null and newsImage != ''">
-				NEWS_IMAGE = #{newsImage},
-			</if>
-			<if test="newsSource != null and newsSource != ''">
-				NEWS_SOURCE = #{newsSource},
-			</if>
-			<if test="newsContent != null and newsContent != ''">
-				NEWS_CONTENT = #{newsContent},
-			</if>
-		</set>
-		WHERE NEWS_ID = #{newsId}
-	</update>
+    <!-- 更新咨询信息 根据ID改，row中有id，所以添加条件为where id = xxx -->
+    <update id="updateNews" parameterType="com.wanghuan.model.sys.News">
+        update t_news
+        <set>
+            <if test="newsTitle != null and newsTitle != ''">
+                NEWS_TITLE = #{newsTitle},
+            </if>
+            <if test="newsImage != null and newsImage != ''">
+                NEWS_IMAGE = #{newsImage},
+            </if>
+            <if test="newsSource != null and newsSource != ''">
+                NEWS_SOURCE = #{newsSource},
+            </if>
+            <if test="newsContent != null and newsContent != ''">
+                NEWS_CONTENT = #{newsContent},
+            </if>
+        </set>
+        WHERE NEWS_ID = #{newsId}
+    </update>
 
-	<!--后台人员分页查看咨询
-	 	where 标签能够去除首个if的 and
-	 	多个if条件可以同时判断，但是需要在前面加上AND
-	 	字符串类型判断用null  和 ‘’
-	 	int 判断用 0 或者 -1 或者数字
-	 	date类型判断用null，不能用‘’ 否则报错
-	-->
-	<select id="adminFindPager" parameterType="map" resultMap="newsMap">
-		SELECT * FROM t_news
-		<where>
-			<if test="newsTitle != null and newsTitle!= ''">
-				AND NEWS_TITLE = #{newsTitle}
-			</if>
-			<if test="adminUser != null and adminUser!= ''">
-				AND ADMIN_USER = #{adminUser}
-			</if>
-			<if test="newsSource != null and newsSource!= ''">
-				AND NEWS_SOURCE = #{newsSource}
-			</if>
-			<if test="startTime != null and startTime!= ''">
-				AND CREATE_TIME &gt; #{createTime}
-			</if>
-			<if test="endTime != null and endTime!= ''">
-				AND NEWS_SOURCE &lt; #{createTime}
-			</if>
-		   	AND NEWS_STATUS = 0
-		</where>
-		ORDER BY CREATE_TIME DESC
-	</select>
+    <!--后台人员分页查看咨询
+         where 标签能够去除首个if的 and
+         多个if条件可以同时判断，但是需要在前面加上AND
+         字符串类型判断用null  和 ‘’
+         int 判断用 0 或者 -1 或者数字
+         date类型判断用null，不能用‘’ 否则报错
+    -->
+    <select id="adminFindPager" parameterType="map" resultMap="newsMap">
+        SELECT * FROM t_news
+        <where>
+            <if test="newsTitle != null and newsTitle!= ''">
+                AND NEWS_TITLE = #{newsTitle}
+            </if>
+            <if test="adminUser != null and adminUser!= ''">
+                AND ADMIN_USER = #{adminUser}
+            </if>
+            <if test="newsSource != null and newsSource!= ''">
+                AND NEWS_SOURCE = #{newsSource}
+            </if>
+            <if test="startTime != null and startTime!= ''">
+                AND CREATE_TIME &gt; #{createTime}
+            </if>
+            <if test="endTime != null and endTime!= ''">
+                AND NEWS_SOURCE &lt; #{createTime}
+            </if>
+            AND NEWS_STATUS = 0
+        </where>
+        ORDER BY CREATE_TIME DESC
+    </select>
 
     <select id="selectCountByMap" parameterType="map" resultType="long">
         SELECT COUNT(*) from t_news
@@ -107,48 +109,47 @@
     </select>
 
 
+    <!--用户分页查看咨询-->
+    <select id="userFindPager" parameterType="map" resultMap="newsMap">
+        SELECT NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE FROM t_news
+        <where>
+            <if test="newsTitle != null and newsTitle!= ''">
+                AND NEWS_TITLE = #{newsTitle}
+            </if>
+            <if test="adminUser != null and adminUser!= ''">
+                AND ADMIN_USER = #{adminUser}
+            </if>
+            <if test="newsSource != null and newsSource!= ''">
+                AND NEWS_SOURCE = #{newsSource}
+            </if>
+        </where>
+        ORDER BY CREATE_TIME DESC
+    </select>
 
-	<!--用户分页查看咨询-->
-	<select id="userFindPager" parameterType="map" resultMap="newsMap">
-		SELECT NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE FROM t_news
-		<where>
-			<if test="newsTitle != null and newsTitle!= ''">
-				AND NEWS_TITLE = #{newsTitle}
-			</if>
-			<if test="adminUser != null and adminUser!= ''">
-				AND ADMIN_USER = #{adminUser}
-			</if>
-			<if test="newsSource != null and newsSource!= ''">
-				AND NEWS_SOURCE = #{newsSource}
-			</if>
-		</where>
-		ORDER BY CREATE_TIME DESC
-	</select>
 
+    <!--后台人员通过咨询ID获取咨询-->
+    <select id="findNewsById" resultMap="newsMap" parameterType="String">
+        select PK_SID,ADMIN_USER,NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE,CREATE_TIME from t_news
+        <where>
+            NEWS_ID = #{newsId}
+        </where>
+    </select>
 
-	<!--后台人员通过咨询ID获取咨询-->
-	<select id="findNewsById" resultMap="newsMap" parameterType="String">
-		select PK_SID,ADMIN_USER,NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE,CREATE_TIME from t_news
-		<where>
-			NEWS_ID = #{newsId}
-		</where>
-	</select>
-
-	<!--通过咨询作者获取咨询-->
-	<select id="findNewsByAdiminUser" resultMap="newsMap" parameterType="String">
-		select NEWS_ID,NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE from t_news
-		<where>
-			ADMIN_USER = #{adminUser}
-		</where>
-	</select>
-<!--
-	用户通过咨询标题获取咨询
-	<select id="userFindPager" resultMap="newsMap" parameterType="String">
-		select NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE from t_news
-		<where>
-			NEWS_TITLE = #{newsTitle}
-		</where>
-	</select>-->
+    <!--通过咨询作者获取咨询-->
+    <select id="findNewsByAdiminUser" resultMap="newsMap" parameterType="String">
+        select NEWS_ID,NEWS_TITLE,NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE from t_news
+        <where>
+            ADMIN_USER = #{adminUser}
+        </where>
+    </select>
+    <!--
+        用户通过咨询标题获取咨询
+        <select id="userFindPager" resultMap="newsMap" parameterType="String">
+            select NEWS_CONTENT,NEWS_IMAGE,NEWS_SOURCE from t_news
+            <where>
+                NEWS_TITLE = #{newsTitle}
+            </where>
+        </select>-->
 
 
 </mapper>

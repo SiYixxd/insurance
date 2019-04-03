@@ -18,31 +18,33 @@ import com.wanghuan.service.sys.RelationService;
 @RestController
 public class RelationController {
 
-	private Logger log = LoggerFactory.getLogger(RelationController.class);
+    private Logger log = LoggerFactory.getLogger(RelationController.class);
 
-	@Resource(name = "relationServiceImpl")
-	private RelationService relationService;
+    @Resource(name = "relationServiceImpl")
+    private RelationService relationService;
 
-	/**
-	 * 通过userId得到关系List
-	 * @param userId
-	 * @return
-	 */
-	@GetMapping("/relations/{userId}")
-	public List<RelationEntity> getRelationByUserId(@PathVariable int userId){
-		log.debug("The method is ending");
-		return relationService.getRelationByUserId(userId);
-	}
-	
-	/**
-	 * 批量插入关系数据
-	 * @param relationList
-	 * @return
-	 */
-	@PostMapping("/relations")
-	public List<RelationEntity> insertRelations(@RequestBody() List<RelationEntity> relationList){
-		relationService.insertRelations(relationList);
-		log.debug("The method is ending");
-		return relationList;
-	}
+    /**
+     * 通过userId得到关系List
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/relations/{userId}")
+    public List<RelationEntity> getRelationByUserId(@PathVariable int userId) {
+        log.debug("The method is ending");
+        return relationService.getRelationByUserId(userId);
+    }
+
+    /**
+     * 批量插入关系数据
+     *
+     * @param relationList
+     * @return
+     */
+    @PostMapping("/relations")
+    public List<RelationEntity> insertRelations(@RequestBody() List<RelationEntity> relationList) {
+        relationService.insertRelations(relationList);
+        log.debug("The method is ending");
+        return relationList;
+    }
 }

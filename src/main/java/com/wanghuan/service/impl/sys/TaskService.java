@@ -21,14 +21,14 @@ public class TaskService {
     @Autowired
     NewsService newsService;
 
-//    @PostConstruct
-    public void test(){
+    //    @PostConstruct
+    public void test() {
         //创建定时器对象
-        Timer t=new Timer();
+        Timer t = new Timer();
         //在3秒后执行MyTask类中的run方法,后面每10秒跑一次
         MyTask task = new MyTask();
         task.setNewsService(newsService);
-        t.schedule(task, 3000,10000);
+        t.schedule(task, 3000, 10000);
     }
 
 }
@@ -39,7 +39,6 @@ public class TaskService {
 class MyTask extends TimerTask {
 
     private NewsService newsService;
-
 
 
     //MyTask 是new出来的，不是通过spring ioc创建的对象，所以不能依赖注入

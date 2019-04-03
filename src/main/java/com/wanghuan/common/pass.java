@@ -7,8 +7,8 @@ import org.quartz.JobDetail;
 import java.security.NoSuchAlgorithmException;
 
 public class pass {
-    public static void  main(String []args) throws NoSuchAlgorithmException {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         MD5Util m = new MD5Util();
-       System.out.println(MD5Util.encrypt("123"));
+        System.out.println(MD5Util.encrypt("123"));
     }
 }

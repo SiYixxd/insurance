@@ -1,20 +1,19 @@
 package com.wanghuan.controller;
 
+import com.insurance.model.sys.MessageInfo;
 import com.wanghuan.common.Constants;
 import com.wanghuan.common.InsuranceException;
 import com.wanghuan.controller.request.SignRequest;
 import com.wanghuan.controller.response.BaseResponse;
-import com.wanghuan.model.sys.UserSign;
+import com.wanghuan.dubboService.DubboConsumerService;
+import com.wanghuan.service.sys.InsuranceItemService;
 import com.wanghuan.service.sys.UserSignService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
+import javax.websocket.server.PathParam;
 
 @RestController
 @Slf4j
@@ -23,6 +22,21 @@ public class UserSignController {
     @Resource(name = "userSignServiceImpl")
     private UserSignService userSignService;
 
+
+    @Resource
+    private InsuranceItemService itemService;
+    @Resource
+    private DubboConsumerService consumerService;
+
+    @GetMapping(value = "/testDubbo")
+    public String updateSign() {
+        return itemService.findInsuranceAndUserInfoById();
+    }
+
+    @GetMapping(value = "/testInsertMobile/{mobile}")
+    public MessageInfo testInsertMobile(@PathVariable String mobile) {
+        return consumerService.getMsgByMobile(mobile);
+    }
 
     /**
      * 用户签到接口

@@ -12,10 +12,10 @@
     <!-- 新建保险计划 -->
     <insert id="insertCategory" parameterType="com.wanghuan.model.sys.InsuranceCategory">
         insert into t_insurance_category (PK_SID, CREATE_TIME, DELETE_STATUS,CATEGORY_NAME,CATEGORY_ID)
-        VALUES (#{pkSid}, #{createTime}, #{deleteStatus},  #{categoryName}, #{categoryId})
+        VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{categoryName}, #{categoryId})
     </insert>
 
-  <!--移除一个保险计划-->
+    <!--移除一个保险计划-->
     <update id="removeCategory" parameterType="String">
         update t_insurance_category
         <set>
@@ -28,23 +28,21 @@
     <update id="updateCategory" parameterType="com.wanghuan.model.sys.InsuranceCategory">
         update t_insurance_category
         <set>
-            <if test="categoryName != null and categoryName!=''" >
+            <if test="categoryName != null and categoryName!=''">
                 CATEGORY_NAME=#{categoryName},
             </if>
         </set>
-        where  CATEGORY_ID=#{categoryId}
+        where CATEGORY_ID=#{categoryId}
     </update>
 
-<!--通过保险id查询保险计划-->
+    <!--通过保险id查询保险计划-->
     <select id="findCategoryById" resultMap="insuranceCategoryMap" parameterType="String">
-        select CATEGORY_NAME  from t_insurance_category
+        select CATEGORY_NAME from t_insurance_category
         <where>
             CATEGORY_ID = #{categoryId}
-            AND   DELETE_STATUS =0
+            AND DELETE_STATUS =0
         </where>
     </select>
-
-
 
 
 </mapper>

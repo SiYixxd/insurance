@@ -35,20 +35,18 @@ public class NewsController {
     private RedisUtil redisUtil;
 
 
-
     //接口0 后台人员查询文章 分页 按照时间倒叙排序
-    //request使用不方便，频繁。用一个写一个？
     @PostMapping(value = "/adminFindPager")
     public NewsResponse adminFindNews(@RequestBody AdminPageRequest adminPageRequest) {
         NewsResponse response = new NewsResponse();
-        HashMap<String , Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("page", adminPageRequest.getPage());
         map.put("newsTitle", adminPageRequest.getNewsTitle());
         map.put("adminUser", adminPageRequest.getAdminUser());
-        map.put("newsSource",adminPageRequest.getNewsSource());
-        map.put("startTime",adminPageRequest.getStartTime());
-        map.put("endTime",adminPageRequest.getEndTime());
-        List<News>  list =  newsService.adminFindPager(map);
+        map.put("newsSource", adminPageRequest.getNewsSource());
+        map.put("startTime", adminPageRequest.getStartTime());
+        map.put("endTime", adminPageRequest.getEndTime());
+        List<News> list = newsService.adminFindPager(map);
         response.setTotal(newsService.selectCountByMap(map));
         response.setList(list);
         return response;
@@ -123,14 +121,15 @@ public class NewsController {
             return response;
         }
     }
+
     //批量移除咨询
     @PostMapping(value = "/removeMutipleNews")
     public BaseResponse removeMutipleNews(@RequestBody NewsRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             //获取传递的多个id字符串
-            String  newsIds =  request.getNewsIds();
-            String []  ids =  newsIds.split(",");
+            String newsIds = request.getNewsIds();
+            String[] ids = newsIds.split(",");
             newsService.removeMutipleNews(Arrays.asList(ids));
             return response;
         } catch (Exception e) {
@@ -140,10 +139,6 @@ public class NewsController {
             return response;
         }
     }
-
-
-
-
 
 
 }

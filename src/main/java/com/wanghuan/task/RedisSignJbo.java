@@ -1,10 +1,8 @@
 package com.wanghuan.task;
 
-import com.sun.javafx.collections.MappingChange;
 import com.wanghuan.common.Constants;
-import com.wanghuan.service.sys.UserSignService;
+import com.wanghuan.model.sys.UserInfo;
 import com.wanghuan.utils.RedisUtil;
-import com.wanghuan.utils.SpringUtil2;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

@@ -11,14 +11,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserContactDaoTest  {
+public class UserContactDaoTest {
     @Autowired
     UserContactDao userContactDao;
 
 
     @Test
-    public void testInsert(){
+    public void testInsert() {
         UserContact userContact = new UserContact();
-        userContactDao.insertContact(userContact);;
+        userContactDao.insertContact(userContact);
+        ;
     }
 }

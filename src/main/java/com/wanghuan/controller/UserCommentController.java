@@ -37,7 +37,6 @@ public class UserCommentController {
      * 增加一条评论
      * 用户给咨询评论
      * 就是UserCommentController中的insertComment方法
-     *
      */
     @PostMapping(value = "/insertComment")
     public BaseResponse insertComment(@RequestBody CommentPageRequest request) {
@@ -113,14 +112,14 @@ public class UserCommentController {
             map.put("userName", request.getPage());
             map.put("commentContent", request.getCommentContent());
             List<CommentVO> list = commentService.findCommentList(map);
-           List<CommentVO> voList = new ArrayList<>();
+            List<CommentVO> voList = new ArrayList<>();
           /*  因为需要返回点赞数，需要遍历一下newslisit把数据copy到volist中，再加上点赞数。
            而comment目前没有，所以不需要多此一举。
             list.forEach(comment -> {
                 CommentVO vo = new CommentVO();
                 BeanUtils.copyProperties(comment, vo);
             });*/
-            getLikeAndDissCount(list,voList, request.getNewsId());
+            getLikeAndDissCount(list, voList, request.getNewsId());
             Boolean endFlag = false;
             if (list.size() < Constants.PAGE_SIZE) {
                 endFlag = true;
@@ -137,29 +136,27 @@ public class UserCommentController {
         }
     }
 
-    private void getLikeAndDissCount(List<CommentVO> list, List<CommentVO> voList, String commentId){
+    private void getLikeAndDissCount(List<CommentVO> list, List<CommentVO> voList, String commentId) {
         list.forEach(comment -> {
-            CommentVO vo  = new CommentVO();
+            CommentVO vo = new CommentVO();
             BeanUtils.copyProperties(comment, vo); //拷贝所有属性
             //点赞的量
             Map likeMap = redisUtil.hgetAll(Constants.CACHE_COMMENT_ACT_LIKE + commentId);
-            if(likeMap != null){
+            if (likeMap != null) {
                 vo.setLikeCount(likeMap.size());
-            }else {
+            } else {
                 vo.setLikeCount(0);
             }
             //踩 的量
             Map dissMap = redisUtil.hgetAll(Constants.CACHE_COMMENT_ACT_DISS + commentId);
-            if(dissMap != null){
+            if (dissMap != null) {
                 vo.setDissCount(dissMap.size());
-            }else {
+            } else {
                 vo.setDissCount(0);
             }
             voList.add(vo);
         });
     }
-
-
 
 
     /**
@@ -216,8 +213,9 @@ public class UserCommentController {
 
     /**
      * 用户通过newsId来查看评论列表
-     *
+     * <p>
      * 用户查看咨询详情的时候，点击查看评论，然后把评论表中对应newsId的数据查出来并显示。
+     *
      * @param request
      * @return
      */

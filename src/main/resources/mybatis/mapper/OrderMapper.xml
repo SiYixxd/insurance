@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.OrderDao">
+    <resultMap id="orderMap" type="com.wanghuan.model.sys.Order">
+        <result column="PK_SID" property="pksId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="ORDER_ID" property="orderId"/>
+        <result column="INSURANCE_ID" property="insuranceId"/>
+        <result column="PLAN_ID" property="planId"/>
+        <result column="CONSUMER_IDNUM" property="consumerIdNum"/>
+        <result column="START_TIME" property="startTime"/>
+        <result column="END_TIME" property="endTime"/>
+        <result column="CONSUMER_NAME" property="consumerName"/>
+        <result column="PRICE" property="price"/>
+        <result column="INSURANCE_POLICY_ID" property="insurancePolicyId"/>
+    </resultMap>
+
+    <!--查看订单列表用的-->
+    <resultMap id="OrderVOMap" type="com.wanghuan.model.sys.vo.OrderVO">
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="ORDER_ID" property="orderId"/>
+        <result column="START_TIME" property="startTime"/>
+        <result column="END_TIME" property="endTime"/>
+        <result column="CONSUMER_NAME" property="consumerName"/>
+        <result column="PRICE" property="price"/>
+        <result column="INSURANCE_POLICY_ID" property="insurancePolicyId"/>
+    </resultMap>
+
+
+    <!--详情用的-->
+    <resultMap id="orderDetailVOMap" type="com.wanghuan.model.sys.vo.OrderDetailVO">
+        <result column="USER_ID" property="userId"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="ORDER_ID" property="orderId"/>
+        <result column="INSURANCE_ID" property="insuranceId"/>
+        <result column="PLAN_ID" property="planId"/>
+        <result column="CONSUMER_IDNUM" property="consumerIdNum"/>
+        <result column="START_TIME" property="startTime"/>
+        <result column="END_TIME" property="endTime"/>
+        <result column="CONSUMER_NAME" property="consumerName"/>
+        <result column="PRICE" property="price"/>
+        <result column="INSURANCE_POLICY_ID" property="insurancePolicyId"/>
+        <collection property="userInfo" ofType="com.wanghuan.model.sys.vo.UserInfoVO">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="MOBILE" property="mobile"/>
+        </collection>
+        <collection property="consumer" ofType="com.wanghuan.model.sys.Consumer">
+            <id column="PK_SID" property="pkSid"/>
+            <result column="ORDER_ID" property="orderId"/>
+            <result column="CONSUMER_IDNUM" property="consumerIdNum"/>
+            <result column="CONSUMER_NAME" property="consumerName"/>
+            <result column="RELATION" property="relation"/>
+        </collection>
+        <collection property="planList" ofType="com.wanghuan.model.sys.vo.PlanVO">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <id column="PK_SID" property="pkSid"/>
+            <result column="CREATE_TIME" property="createTime"/>
+            <result column="DELETE_STATUS" property="deleteStatus"/>
+            <result column="PLAN_NAME" property="planName"/>
+            <result column="INSURANCE_ID" property="insuranceId"/>
+            <result column="PLAN_ID" property="planId"/>
+            <result column="PLAN_PRICE" property="planPrice"/>
+            <result column="PLAN_INFO" property="planInfo"/>
+            <collection property="itemList" ofType="com.wanghuan.model.sys.PlanItem">
+                <id column="PK_SID" property="pkSid"/>
+                <result column="CREATE_TIME" property="createTime"/>
+                <result column="DELETE_STATUS" property="deleteStatus"/>
+                <result column="PLAN_NAME" property="planName"/>
+                <result column="PLAN_INSUR_PRICE" property="planInsurPrice"/>
+                <result column="PLAN_INFO" property="planInfo"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <!-- 新建用户签到信息 -->
+    <insert id="insertOrder" parameterType="com.wanghuan.model.sys.Order">
+        insert into t_insurance_order (PK_SID,USER_ID,CREATE_TIME,UPDATE_TIME,ORDER_ID,INSURANCE_ID,PLAN_ID,CONSUMER_IDNUM,START_TIME,END_TIME,CONSUMER_NAME,PRICE,INSURANCE_POLICY_ID)
+        VALUES (#{pksId}, #{userId}, #{createTime}, #{updateTime}, #{orderId}, #{insuranceId}, #{planId}, #{consumerIdNum}, #{startTime}, #{endTime},#{consumerName},#{price},#{insurancePolicyId})
+    </insert>
+
+    <!--修改订单，用户可以修改订单中的保险产品，起止日期。修改保险产品的时候，自动的把对应的保险计划id更改。-->
+    <update id="updateOrder" parameterType="com.wanghuan.model.sys.Order">
+        update t_insurance_order
+        <set>
+            <if test="consumerIdNum != null and consumerIdNum != ''">
+                CONSUMER_IDNUM = #{consumerIdNum},
+            </if>
+            <if test="planId != null and planId != ''">
+                PLAN_ID = #{planId},
+            </if>
+            <if test="startTime != null and startTime != ''">
+                START_TIME = #{startTime},
+            </if>
+            <if test="endTime != null and endTime != ''">
+                END_TIME = #{endTime},
+            </if>
+        </set>
+        WHERE ORDER_ID = #{orderId}
+    </update>
+
+
+    <!--用户分页查看自己的所有订单-->
+    <select id="findOrderPage" parameterType="map" resultMap="OrderVOMap">
+        SELECT CREATE_TIME,UPDATE_TIME,ORDER_ID,START_TIME,END_TIME,INSURANCE_POLICY_ID,CONSUMER_NAME,PRICE
+        FROM t_insurance_order
+        WHERE USER_ID = #{userId}
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+
+    <!--展示订单详情
+    -->
+  <!--  <select id="showOrderDetails" resultMap="orderDetailVOMap" parameterType="String">
+        select tio.* , tip.*, tpppp.*
+        from t_insurance_order tio
+        LEFT JOIN t_insurance_plan tip ON tii.INSURANCE_ID = tip.INSURANCE_ID
+        LEFT JOIN t_plan_item tpppp on tpppp.PLAN_ID = tip.PLAN_ID
+        WHERE  tio.ORDER_ID = #{orderId}
+    </select>-->
+
+
+    <select id="showOrderDetail" resultMap="orderMap" parameterType="String">
+        select *
+        from t_insurance_order
+        WHERE  ORDER_ID = #{orderId}
+    </select>
+
+
+
+</mapper>

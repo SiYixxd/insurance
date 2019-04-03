@@ -14,7 +14,6 @@ import java.util.Set;
 
 /**
  * 每周用户签到扫描归零
- *
  */
 public class WeekSignJob implements BaseJob {
 
@@ -23,6 +22,7 @@ public class WeekSignJob implements BaseJob {
 
     /**
      * 执行任务，每天零点将签到表格更新。
+     *
      * @param jobExecutionContext
      * @throws JobExecutionException
      */
@@ -33,7 +33,6 @@ public class WeekSignJob implements BaseJob {
         //每周第一天将所有用户信息更新
         // String cronExpressionWeek = "0 0 0 ? * MON";//每周一的0点0分0秒执行*/
     }
-
 
 
 }

@@ -134,8 +134,7 @@ public class UserSignServiceImpl implements UserSignService {
             } else {
                 //用户还没有签到，完成签到，开始保存
                 redisUtil.hset(Constants.CACHE_SIGN_ACT_TRUE, userId, "1");
-                //并且将用户的currentDay+1 todo
-                //在job中完成了，有缺点， 不能立即显示当前已经签了多少天
+                //并且将用户的currentDay+1 在job中完成
                 //  redisUtil.hincry(Constants.CACHE_SIGN_DAY,userId,1L);
             }
         }

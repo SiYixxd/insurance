@@ -10,7 +10,7 @@ public class BeanUtilTest {
 
 
     @Test
-    public void testUtil(){
+    public void testUtil() {
         Demo1P source = new Demo1P();
         source.setName("1");
         Dem21P target = new Dem21P();
@@ -24,7 +24,7 @@ public class BeanUtilTest {
 @Getter
 @Setter
 @ToString
-class Demo1P{
+class Demo1P {
 
     private String name;
 }
@@ -33,7 +33,7 @@ class Demo1P{
 @Getter
 @Setter
 @ToString
-class Dem21P{
+class Dem21P {
     private String username;
     private String name;
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class NewsRequest  implements Serializable {
+public class NewsRequest implements Serializable {
     private String newsId;
     private String adminUser;
     private String newsTitle;

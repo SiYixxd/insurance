@@ -8,13 +8,16 @@ import java.util.List;
 public interface UserSignService {
 
     void insertSign(UserSign userSign);
+
     //完成签到功能
     void updateSign(UserSign userSign);
+
     //查询保险
     UserSign findSignStatus(String userId);
 
     /**
      * 签到方法
+     *
      * @param userId
      */
     void saveSign(String userId) throws Exception;

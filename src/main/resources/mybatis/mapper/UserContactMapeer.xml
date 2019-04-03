@@ -15,10 +15,11 @@
 
     <!-- 新建联系人 -->
     <insert id="insertContact" parameterType="com.wanghuan.model.sys.UserContact">
-        insert into t_insurance_user_contact (PK_SID, CREATE_TIME, DELETE_STATUS,CONTACT_NAME,CONTACT_EMAIL,CONTACT_MOBILE,
+        insert into t_insurance_user_contact (PK_SID, CREATE_TIME,
+        DELETE_STATUS,CONTACT_NAME,CONTACT_EMAIL,CONTACT_MOBILE,
         CONTACT_IDNUMBER,USER_ID)
         VALUES (#{pkSid}, #{createTime}, #{deleteStatus}, #{contactName}, #{contactEmail},
-         #{contactMobile}, #{contactIdNumber}, #{userId})
+        #{contactMobile}, #{contactIdNumber}, #{userId})
     </insert>
 
 
@@ -33,7 +34,7 @@
 
 
     <!--更新联系人信息-->
-    <update id="updateContact" parameterType="com.wanghuan.model.sys.UserContact" >
+    <update id="updateContact" parameterType="com.wanghuan.model.sys.UserContact">
         update t_insurance_user_contact
         <set>
             <if test="contactName != null and contactName != ''">
@@ -50,14 +51,13 @@
     </update>
 
 
-
-<!--通过用户id查询联系人信息 返回一个列表-->
+    <!--通过用户id查询联系人信息 返回一个列表-->
     <select id="findContactByUserId" resultMap="userContactMap" parameterType="String">
         select CONTACT_NAME,CONTACT_EMAIL,CONTACT_MOBILE,
         CONTACT_IDNUMBER from t_insurance_user_contact
         <where>
             USER_ID=#{userId}
-            AND   DELETE_STATUS =0
+            AND DELETE_STATUS =0
         </where>
     </select>
 

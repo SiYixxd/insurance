@@ -14,72 +14,72 @@ import com.wanghuan.service.sys.MenuService;
 @Service("menuServiceImpl")
 public class MenuServiceImpl implements MenuService {
 
-	@Autowired
-	private MenuDao menuDao;
-	
-	@Autowired
-	private RoleDao roleDao;
+    @Autowired
+    private MenuDao menuDao;
 
-	@Override
-	public List<MenuEntity> menuList(int id) {
-		List<String> idList = roleDao.getModulesById(id);
-		
-		String idstemp = "";
-		for (String idtemp : idList) {
-			idstemp = idstemp + idtemp;
-		}
-		String[] ids = idstemp.split(";");
-		List<MenuEntity> parentMenuList = menuDao.getParentMenuListById(ids);
-		List<MenuEntity> childrenMenuList = menuDao.getMenuListById(ids);
-		List<MenuEntity> menuList = new ArrayList<MenuEntity>();
+    @Autowired
+    private RoleDao roleDao;
 
-		for (MenuEntity parentMenu : parentMenuList) {
-			List<MenuEntity> menuListTemp = new ArrayList<MenuEntity>();
-			for (MenuEntity childrenMenu : childrenMenuList) {
-				if (parentMenu.getId() == childrenMenu.getParentId()) {
-					menuListTemp.add(childrenMenu);
-				}
-			}
-			parentMenu.setChildren(menuListTemp);
-			menuList.add(parentMenu);
-		}
+    @Override
+    public List<MenuEntity> menuList(int id) {
+        List<String> idList = roleDao.getModulesById(id);
 
-		return menuList;
-	}
+        String idstemp = "";
+        for (String idtemp : idList) {
+            idstemp = idstemp + idtemp;
+        }
+        String[] ids = idstemp.split(";");
+        List<MenuEntity> parentMenuList = menuDao.getParentMenuListById(ids);
+        List<MenuEntity> childrenMenuList = menuDao.getMenuListById(ids);
+        List<MenuEntity> menuList = new ArrayList<MenuEntity>();
 
-	@Override
-	public List<MenuEntity> menusList(int pageSize, int start, String menuId) {
-		return menuDao.menusList(pageSize, start, menuId);
-	}
+        for (MenuEntity parentMenu : parentMenuList) {
+            List<MenuEntity> menuListTemp = new ArrayList<MenuEntity>();
+            for (MenuEntity childrenMenu : childrenMenuList) {
+                if (parentMenu.getId() == childrenMenu.getParentId()) {
+                    menuListTemp.add(childrenMenu);
+                }
+            }
+            parentMenu.setChildren(menuListTemp);
+            menuList.add(parentMenu);
+        }
 
-	@Override
-	public Integer menusSize(int pageSize, int start, String menuId) {
-		return menuDao.menusSize(pageSize, start, menuId);
-	}
+        return menuList;
+    }
 
-	@Override
-	public void insertMenu(MenuEntity menuEntity) {
-		menuDao.insertMenu(menuEntity);
-	}
+    @Override
+    public List<MenuEntity> menusList(int pageSize, int start, String menuId) {
+        return menuDao.menusList(pageSize, start, menuId);
+    }
 
-	@Override
-	public void updateMenu(MenuEntity menuEntity) {
-		menuDao.updateMenu(menuEntity);
-	}
+    @Override
+    public Integer menusSize(int pageSize, int start, String menuId) {
+        return menuDao.menusSize(pageSize, start, menuId);
+    }
 
-	@Override
-	public void deleteMenus(List<String> groupId) {
-		menuDao.deleteMenus(groupId);
-	}
+    @Override
+    public void insertMenu(MenuEntity menuEntity) {
+        menuDao.insertMenu(menuEntity);
+    }
 
-	@Override
-	public List<MenuEntity> menusByParentId(int parentId) {
-		return menuDao.menusByParentId(parentId);
-	}
+    @Override
+    public void updateMenu(MenuEntity menuEntity) {
+        menuDao.updateMenu(menuEntity);
+    }
 
-	@Override
-	public List<MenuEntity> getSubmenus() {
-		return menuDao.getSubmenus();
-	}
+    @Override
+    public void deleteMenus(List<String> groupId) {
+        menuDao.deleteMenus(groupId);
+    }
+
+    @Override
+    public List<MenuEntity> menusByParentId(int parentId) {
+        return menuDao.menusByParentId(parentId);
+    }
+
+    @Override
+    public List<MenuEntity> getSubmenus() {
+        return menuDao.getSubmenus();
+    }
 
 }

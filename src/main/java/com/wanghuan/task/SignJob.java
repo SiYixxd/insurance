@@ -45,5 +45,4 @@ public class SignJob implements BaseJob {
     }
 
 
-
-    }
+}

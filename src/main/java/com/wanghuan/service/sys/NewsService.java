@@ -10,6 +10,7 @@ import java.util.Map;
 public interface NewsService {
     //添加新资讯
     public void insertNews(News news);
+
     //更新咨询
     public void updateNews(News news);
 
@@ -20,10 +21,10 @@ public interface NewsService {
     public News findNewsByAdminUser(String adminUser);
 
     //后台人员分页查询咨询
-    public  List<News> adminFindPager(Map<String, Object> map);
+    List<News> adminFindPager(Map<String, Object> map);
 
     //用户分页查看咨询
-    public  List<News> userFindPager(Map<String, Object> map);
+    List<News> userFindPager(Map<String, Object> map);
 
     //根据ID移除一篇咨询
     public void removeNews(String id);

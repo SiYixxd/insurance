@@ -9,8 +9,10 @@ public interface InsuranceCategoryDao {
     void insertCategory(InsuranceCategory insuranceCategory);
 
     void removeCategory(String id);
+
     //更新保险信息
     void updateCategory(InsuranceCategory insuranceCategory);
+
     //查询保险
     InsuranceCategory findCategoryById(String id);
 

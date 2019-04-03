@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface RegistService {
     //用户通过手机号注册，传入手机号和验证码
-    public UserInfo signUp(String mobile,String userName,String code,String imageUrl);
+    public UserInfo signUp(String mobile, String userName, String code, String imageUrl);
 
 }

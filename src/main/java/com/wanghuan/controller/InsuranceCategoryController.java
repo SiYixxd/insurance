@@ -28,19 +28,19 @@ public class InsuranceCategoryController {
     private InsuranceCategoryService insuranceCategoryService;
 
 
-
-/**
+    /**
      * 新建保险计划
+     *
      * @param request
      * @return
      */
 
     @PostMapping(value = "/insertCategory")
-    public BaseResponse insertPlan(@RequestBody CategoryRequest request){
+    public BaseResponse insertPlan(@RequestBody CategoryRequest request) {
         BaseResponse response = new BaseResponse();
-        try{
+        try {
             InsuranceCategory category = new InsuranceCategory();
-            BeanUtils.copyProperties(request,category);
+            BeanUtils.copyProperties(request, category);
             category.setCreateTime(new Date());
             category.setCategoryId(IdGeneratorUtil.generatId());
             category.setDeleteStatus(0);
@@ -52,8 +52,8 @@ public class InsuranceCategoryController {
             response.setData(vo);
 
             return response;
-        }catch (Exception e){
-            log.error("新建失败！","参数信息:" + request.toString(),e);
+        } catch (Exception e) {
+            log.error("新建失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -61,14 +61,15 @@ public class InsuranceCategoryController {
     }
 
 
-/**
+    /**
      * 移除一个保险计划
+     *
      * @param request
      * @return
      */
 
     @PostMapping(value = "/removeCategory")
-    public BaseResponse removeCategory(@RequestBody CategoryRequest request){
+    public BaseResponse removeCategory(@RequestBody CategoryRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             insuranceCategoryService.removeCategory(request.getCategoryId());
@@ -76,7 +77,7 @@ public class InsuranceCategoryController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("删除失败！","参数信息:" + request.toString(),e);
+            log.error("删除失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -85,26 +86,25 @@ public class InsuranceCategoryController {
     }
 
 
-
-
-/**
+    /**
      * 更新保险计划
+     *
      * @param request
      * @return
      */
 
     @PostMapping(value = "/updateCategory")
-    public BaseResponse updateCategory(@RequestBody CategoryRequest request ){
+    public BaseResponse updateCategory(@RequestBody CategoryRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceCategory category = new InsuranceCategory();
-            BeanUtils.copyProperties(request,category);
+            BeanUtils.copyProperties(request, category);
             insuranceCategoryService.updateCategory(category);
             response.setCode(Constants.SUCCESS_CODE);
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("更新失败！","参数信息:" + request.toString(),e);
+            log.error("更新失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
@@ -112,18 +112,15 @@ public class InsuranceCategoryController {
     }
 
 
-
-
-
-
-/**
+    /**
      * 根据id查询保险计划信息。
+     *
      * @param request
      * @return
      */
 
     @PostMapping(value = "/findCategoryById")
-    public BaseResponse findCategoryById(@RequestBody CategoryRequest request){
+    public BaseResponse findCategoryById(@RequestBody CategoryRequest request) {
         BaseResponse response = new BaseResponse();
         try {
             InsuranceCategory category = insuranceCategoryService.findCategoryById(request.getCategoryId());
@@ -132,15 +129,12 @@ public class InsuranceCategoryController {
             response.setMessage(Constants.SUCCESS_MESSAGE);
             return response;
         } catch (BeansException e) {
-            log.error("查找失败！","参数信息:" + request.toString(),e);
+            log.error("查找失败！", "参数信息:" + request.toString(), e);
             response.setCode(Constants.ERROR_CODE);
             response.setMessage(Constants.ERROR_MESSAGE);
             return response;
         }
     }
-
-
-
 
 
 }

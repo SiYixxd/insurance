@@ -10,6 +10,12 @@
         <result column="CREATE_TIME" property="createTime"/>
         <result column="password" property="password"/>
     </resultMap>
+
+    <resultMap id="userInfoVOMap" type="com.wanghuan.model.sys.vo.UserInfoVO">
+        <result column="USER_NAME" property="userName"/>
+        <result column="MOBILE" property="userMobile"/>
+    </resultMap>
+
     <!-- 新建用户信息 -->
     <insert id="insertUser" parameterType="com.wanghuan.model.sys.UserInfo">
         insert into t_user_info (PK_SID, USER_ID, USER_NAME, MOBILE,IMAGE_URL, CREATE_TIME, PASSWORD)
@@ -48,6 +54,14 @@
             MOBILE = #{userMobile}
         </where>
     </select>
+
+    <select id="getUserInfoVO" resultMap="userInfoVOMap" parameterType="String">
+        select  USER_NAME,MOBILE   from t_user_info
+        <where>
+            USER_ID = #{userId}
+        </where>
+    </select>
+
 
     <!-- 更新用户密码 -->
     <update id="updateUserPassword" parameterType="String">

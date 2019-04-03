@@ -68,7 +68,7 @@ public class ReUserNewsController {
         //设置结束标记
         boolean endFlag = false;
         //判断list是否结束，还有没有下一页。
-        if (list.size()<Constants.PAGE_SIZE){
+        if (list.size() < Constants.PAGE_SIZE) {
             endFlag = true;
         }
         //返回封装的数据

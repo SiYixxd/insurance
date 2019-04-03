@@ -16,7 +16,7 @@
     </insert>
 
     <!--更新用户签到状态-->
-    <update id="updateSign" parameterType="com.wanghuan.model.sys.UserSign" >
+    <update id="updateSign" parameterType="com.wanghuan.model.sys.UserSign">
         update t_user_sign
         <set>
             <if test="signStatus != null and signStatus != ''">
@@ -33,7 +33,7 @@
     </update>
 
 
-<!--通过用户id查询签到状态-->
+    <!--通过用户id查询签到状态-->
     <select id="findSignStatus" resultMap="userSignMap" parameterType="String">
         select SIGN_STATUS,TOTAL_DAY,CURRENT_DAY
         from t_user_sign
@@ -42,34 +42,34 @@
         </where>
     </select>
 
-<!--    &lt;!&ndash;查询出没有连续签到的用户id&ndash;&gt;
-    <select id="findNotContinuous" resultMap="String">
-        select USER_ID
-        from t_user_sign
-        <where>
-            CURRENT_DAY &gt;{1}
-            AND
-            SIGN_STATUS = 0
-        </where>
-    </select>-->
+    <!--    &lt;!&ndash;查询出没有连续签到的用户id&ndash;&gt;
+        <select id="findNotContinuous" resultMap="String">
+            select USER_ID
+            from t_user_sign
+            <where>
+                CURRENT_DAY &gt;{1}
+                AND
+                SIGN_STATUS = 0
+            </where>
+        </select>-->
 
 
-<!--修改断签的用户信息-->
+    <!--修改断签的用户信息-->
     <update id="updateIrregularSign">
         update t_user_sign SET SIGN_STATUS = 0 CURRENT_DAY = 1 TOTAL_DAY =1
         WHERE
-          CURRENT_DAY &gt;{1}
-            AND
-            SIGN_STATUS = 0
+        CURRENT_DAY &gt;{1}
+        AND
+        SIGN_STATUS = 0
     </update>
 
     <!--修改连续签到的用户信息-->
     <update id="updateContinousSign">
         update t_user_sign SET SIGN_STATUS = 0 CURRENT_DAY = CURRENT_DAY + 1 TOTAL_DAY = TOTAL_DAY+1
         WHERE
-          CURRENT_DAY &gt;{1}
-            AND
-            SIGN_STATUS = 1
+        CURRENT_DAY &gt;{1}
+        AND
+        SIGN_STATUS = 1
     </update>
 
     <!--每周更新一次所有用户签到信息，全部归零-->

@@ -1,12 +1,12 @@
 package com.wanghuan.service.impl.sys;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.wanghuan.dao.MessageInfoDao;
 import com.wanghuan.model.sys.MessageInfo;
 import com.wanghuan.service.sys.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service(value = "messageInfoServiceImpl")
+@Service(version = "1.0.0")
 public class MessageInfoServiceImpl implements MessageInfoService {
     @Autowired
     private MessageInfoDao messageInfoDao;

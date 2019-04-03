@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wanghuan.dao.MessageInfoDao">
-	<resultMap id="messageInfoMap" type="com.wanghuan.model.sys.MessageInfo">
-		<id column="PK_SID" property="pkSid" />
-		<result column="CHECK_CODE" property="code" />
-		<result column="MOBILE" property="mobile" />
-		<result column="CREATE_TIME" property="createTime" />
-		<result column="TIMEOUT" property="timeout" />
-	</resultMap>
+    <resultMap id="messageInfoMap" type="com.wanghuan.model.sys.MessageInfo">
+        <id column="PK_SID" property="pkSid"/>
+        <result column="CHECK_CODE" property="code"/>
+        <result column="MOBILE" property="mobile"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="TIMEOUT" property="timeout"/>
+    </resultMap>
 
-	<!-- 保存code信息
-	 	id 是 dao 接口的方法名称
-	 	parameterType 如果要用到对象，这里传对象的引用
-	 -->
-	<insert id="saveMessageInfo" parameterType="com.wanghuan.model.sys.MessageInfo">
-		insert into t_sms (PK_SID,CHECK_CODE,MOBILE,CREATE_TIME,TIMEOUT)
-		values
-		(#{pkSid},#{code},#{mobile},#{createTime},#{timeout})
-	</insert>
+    <!-- 保存code信息
+         id 是 dao 接口的方法名称
+         parameterType 如果要用到对象，这里传对象的引用
+     -->
+    <insert id="saveMessageInfo" parameterType="com.wanghuan.model.sys.MessageInfo">
+        insert into t_sms (PK_SID,CHECK_CODE,MOBILE,CREATE_TIME,TIMEOUT)
+        values
+        (#{pkSid},#{code},#{mobile},#{createTime},#{timeout})
+    </insert>
 
-	<!--应该返回的是一个MessageInfo对象-->
-	<select id="getMsgByMobile" parameterType="String" resultMap="messageInfoMap">
-		select * from t_sms
-		<where>
-			MOBILE = #{mobile}
-		</where>
-			order by CREATE_TIME DESC limit 1
-	</select>
+    <!--应该返回的是一个MessageInfo对象-->
+    <select id="getMsgByMobile" parameterType="String" resultMap="messageInfoMap">
+        select * from t_sms
+        <where>
+            MOBILE = #{mobile}
+        </where>
+        order by CREATE_TIME DESC limit 1
+    </select>
 </mapper>
